@@ -226,8 +226,8 @@ onBeforeUnmount(() => {
 
 <style scoped>
 .multi-chart {
-  background: var(--xv-surface);
-  border: 1px solid var(--xv-border);
+  background: var(--dv-surface);
+  border: 1px solid var(--dv-border);
   border-radius: 8px;
   padding: 10px;
   box-sizing: border-box;
@@ -239,17 +239,17 @@ onBeforeUnmount(() => {
   align-items: center;
   gap: 10px;
   padding-bottom: 6px;
-  border-bottom: 1px solid var(--xv-border);
+  border-bottom: 1px solid var(--dv-border);
 }
 .chart-sn {
   font-size: 14px;
   font-weight: 700;
-  color: var(--xv-text);
+  color: var(--dv-text);
   letter-spacing: 1px;
 }
 .chart-sub {
   font-size: 11px;
-  color: var(--xv-text-2);
+  color: var(--dv-text-2);
 }
 .chart-tag {
   margin-left: auto;

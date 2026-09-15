@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="zh-CN" data-xv-mode="dash" class="dark">
+<html lang="zh-CN" data-dv-mode="dash" class="dark">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -8,16 +8,16 @@
       // 首屏前置应用显示模式，避免主题闪烁（FOUC）
       (function () {
         try {
-          var m = localStorage.getItem('xv-display-mode') || 'dash'
+          var m = localStorage.getItem('dv-display-mode') || 'dash'
           if (m !== 'dash' && m !== 'contrast' && m !== 'clean') m = 'dash'
           var el = document.documentElement
-          el.setAttribute('data-xv-mode', m)
+          el.setAttribute('data-dv-mode', m)
           el.classList.toggle('dark', m !== 'clean')
         } catch (e) { /* 忽略：回退默认深色 */ }
       })()
     </script>
-    <script type="module" crossorigin src="/assets/index-DUBXwbuc.js"></script>
-    <link rel="stylesheet" crossorigin href="/assets/index-BuYlsmmK.css">
+    <script type="module" crossorigin src="/assets/index-6XXVY_tP.js"></script>
+    <link rel="stylesheet" crossorigin href="/assets/index-BfyWlTn7.css">
   </head>
   <body>
     <div id="app"></div>

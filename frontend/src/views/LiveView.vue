@@ -287,7 +287,7 @@ onBeforeUnmount(() => {
   position: relative;
   height: calc(100vh - 220px);
   min-height: 420px;
-  background: var(--xv-surface);
+  background: var(--dv-surface);
 }
 .video-container canvas {
   position: absolute;
@@ -302,7 +302,7 @@ onBeforeUnmount(() => {
   display: flex;
   align-items: center;
   justify-content: center;
-  color: var(--xv-text-2);
+  color: var(--dv-text-2);
   font-size: 14px;
 }
 .shot-thumb {
@@ -314,8 +314,8 @@ onBeforeUnmount(() => {
   flex-direction: column;
   align-items: stretch;
   width: 220px;
-  background: color-mix(in srgb, var(--xv-surface) 92%, transparent);
-  border: 1px solid var(--xv-border-2);
+  background: color-mix(in srgb, var(--dv-surface) 92%, transparent);
+  border: 1px solid var(--dv-border-2);
   border-radius: 6px;
   padding: 6px;
 }
@@ -330,7 +330,7 @@ onBeforeUnmount(() => {
 .shot-thumb-name {
   margin-top: 4px;
   font-size: 12px;
-  color: var(--xv-text);
+  color: var(--dv-text);
   overflow: hidden;
   white-space: nowrap;
   text-overflow: ellipsis;

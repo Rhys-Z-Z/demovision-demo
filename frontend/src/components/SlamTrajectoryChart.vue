@@ -3,7 +3,7 @@
     <div class="traj-head">
       <span class="traj-title">SLAM 轨迹曲线</span>
       <span class="traj-sub">X / Y / Z / 欧式距离（mm）</span>
-      <span v-if="meta" class="traj-meta xv-num">
+      <span v-if="meta" class="traj-meta dv-num">
         {{ meta.sampled }} / {{ meta.total }} 点{{ meta.total > meta.sampled ? '（已降采样）' : '' }}
       </span>
       <div class="traj-actions">
@@ -177,9 +177,9 @@ onBeforeUnmount(() => {
 
 <style scoped>
 .traj-chart {
-  border: 1px solid var(--xv-border);
-  border-radius: var(--xv-r);
-  background: var(--xv-surface-2);
+  border: 1px solid var(--dv-border);
+  border-radius: var(--dv-r);
+  background: var(--dv-surface-2);
   padding: 10px 12px 6px;
   box-sizing: border-box;
 }
@@ -188,16 +188,16 @@ onBeforeUnmount(() => {
   align-items: center;
   gap: 10px;
   padding-bottom: 6px;
-  border-bottom: 1px solid var(--xv-border);
+  border-bottom: 1px solid var(--dv-border);
 }
 .traj-title {
   font-size: 13px;
   font-weight: 700;
-  color: var(--xv-text);
+  color: var(--dv-text);
   letter-spacing: .04em;
 }
-.traj-sub { font-size: 11px; color: var(--xv-text-3); }
-.traj-meta { font-size: 11px; color: var(--xv-text-3); }
+.traj-sub { font-size: 11px; color: var(--dv-text-3); }
+.traj-meta { font-size: 11px; color: var(--dv-text-3); }
 .traj-actions { margin-left: auto; display: flex; align-items: center; gap: 2px; flex: none; }
 .traj-actions .el-button { padding: 4px 6px; height: 24px; font-size: 12px; }
 .traj-body { width: 100%; }
@@ -207,7 +207,7 @@ onBeforeUnmount(() => {
   justify-content: center;
   gap: 8px;
   height: 120px;
-  color: var(--xv-text-3);
+  color: var(--dv-text-3);
   font-size: 13px;
 }
 </style>

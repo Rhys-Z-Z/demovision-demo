@@ -52,7 +52,7 @@ watch(
   width: 100%;
   height: v-bind(height);
   overflow-y: auto;
-  background: var(--xv-bg);
+  background: var(--dv-bg);
   border-radius: 6px;
   padding: 10px 12px;
   box-sizing: border-box;
@@ -62,7 +62,7 @@ watch(
   margin: 0;
   font-size: 12px;
   line-height: 1.55;
-  color: var(--xv-text-2);
+  color: var(--dv-text-2);
   white-space: pre-wrap;
   word-break: break-all;
 }
