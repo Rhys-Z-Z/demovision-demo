@@ -1,0 +1,457 @@
+/* ============================================================
+ * DemoVision Web · 设计系统 —— 深色精密仪表风格
+ * ------------------------------------------------------------
+ * 气质：航空驾驶舱 / 高端运动手表 / 实验室仪器。
+ *      暗底、高对比信号色、数字突出、层级清晰；利落直角 + 8px 小圆角。
+ *
+ * 三种显示模式（html[data-xv-mode]）：
+ *   dash      深色精密仪表（默认）
+ *   contrast  高对比（强光 / 远距离 / 大屏扫读）
+ *   clean     洁净室（明亮环境，亮底）
+ *
+ * 约定：所有 --xv-* 是设计 token，业务样式只用 token；
+ *      --el-* 由 token 反向接管 Element Plus，避免蓝色残留。
+ * ============================================================ */
+
+/* ============ 1. 设计 token ============ */
+
+:root,
+html[data-xv-mode="dash"] {
+  color-scheme: dark;
+
+  /* 表面层次（几乎不用粗边框，靠表面深浅区分） */
+  --xv-bg:        #0B0C10;
+  --xv-surface:   #12141A;
+  --xv-surface-2: #181B24;
+  --xv-surface-3: #1E2230;
+  --xv-border:    #232734;
+  --xv-border-2:  #2E3444;
+
+  /* 品牌 / 信号色 */
+  --xv-primary:    #00E5C9;
+  --xv-on-primary: #00201C;
+  --xv-info:       #59B6FF;
+  --xv-ok:         #2DD4A0;
+  --xv-warn:       #F5B041;
+  --xv-err:        #FF5A6A;
+
+  /* 文字层级 */
+  --xv-text:   #E8EEF4;
+  --xv-text-2: #A9B5C4;
+  --xv-text-3: #6D798A;
+
+  /* 形状 / 深度 / 动效 */
+  --xv-r:        8px;
+  --xv-r-sm:     6px;
+  --xv-shadow:   0 2px 12px rgba(0, 0, 0, .45);
+  --xv-glow:     0 0 0 1px rgba(0, 229, 201, .30), 0 0 18px -6px rgba(0, 229, 201, .55);
+  --xv-dur:      240ms;
+  --xv-ease:     cubic-bezier(.4, 0, .2, 1);
+
+  /* 水印强度（署名「不刻意」→ 极低对比） */
+  --xv-wm-opacity:   .045;
+  --xv-sign-opacity: .10;
+
+  /* 字体（JetBrains Mono 随 dist 自包含打包，无外网依赖）
+     末尾追加中文 sans：JetBrains Mono 无中日韩字形，数字/拉丁走等宽，
+     中文自动回退到系统中文 sans，避免整段掉进难看的等宽中文回退。 */
+  --xv-mono: "JetBrains Mono", ui-monospace, "Cascadia Mono", "SF Mono",
+             Menlo, Consolas, "Liberation Mono", monospace,
+             "Noto Sans SC", "PingFang SC", "Microsoft YaHei", sans-serif;
+  --xv-sans: -apple-system, BlinkMacSystemFont, "Segoe UI", "Noto Sans SC",
+             "PingFang SC", "Microsoft YaHei", Roboto, "Helvetica Neue", sans-serif;
+}
+
+/* ---- 高对比：强光 / 远距离 ---- */
+html[data-xv-mode="contrast"] {
+  color-scheme: dark;
+
+  --xv-bg:        #000000;
+  --xv-surface:   #0A0B0F;
+  --xv-surface-2: #14171E;
+  --xv-surface-3: #1C2028;
+  --xv-border:    #3B4252;
+  --xv-border-2:  #565F73;
+
+  --xv-primary:    #00FFDC;
+  --xv-on-primary: #001512;
+  --xv-info:       #7FC8FF;
+  --xv-ok:         #3BF0B4;
+  --xv-warn:       #FFC24D;
+  --xv-err:        #FF7A88;
+
+  --xv-text:   #FFFFFF;
+  --xv-text-2: #CBD5E1;
+  --xv-text-3: #94A1B2;
+
+  --xv-shadow: 0 2px 14px rgba(0, 0, 0, .8);
+  --xv-glow:   0 0 0 2px rgba(0, 255, 220, .55), 0 0 20px -4px rgba(0, 255, 220, .7);
+
+  --xv-wm-opacity:   .07;
+  --xv-sign-opacity: .22;
+}
+
+/* ---- 洁净室：明亮环境 ---- */
+html[data-xv-mode="clean"] {
+  color-scheme: light;
+
+  --xv-bg:        #EDF0F4;
+  --xv-surface:   #FFFFFF;
+  --xv-surface-2: #F5F7FA;
+  --xv-surface-3: #EAEEF3;
+  --xv-border:    #D3DAE3;
+  --xv-border-2:  #BCC6D2;
+
+  --xv-primary:    #00857A;
+  --xv-on-primary: #FFFFFF;
+  --xv-info:       #1B6FC4;
+  --xv-ok:         #12855F;
+  --xv-warn:       #A9660A;
+  --xv-err:        #C42D3F;
+
+  --xv-text:   #16202B;
+  --xv-text-2: #4A5768;
+  --xv-text-3: #7B8798;
+
+  --xv-shadow: 0 1px 6px rgba(23, 34, 48, .10);
+  --xv-glow:   0 0 0 2px rgba(0, 133, 122, .22);
+
+  --xv-wm-opacity:   .05;
+  --xv-sign-opacity: .14;
+}
+
+/* ============ 2. 接管 Element Plus ============ */
+/* dash / contrast 走 EP 暗色基底，clean 走亮色基底；三种模式统一映射到 token。
+   选择器必须写成 `:root, html.dark`，原因是两套 EP 样式的 specificity：
+     · element-plus/dist/index.css 用 `:root`      (0,1,0)  ← clean 模式要对赢它
+     · theme-chalk/dark/css-vars.css 用 `html.dark` (0,1,1)  ← dash/contrast 要对赢它
+   只写 `html` 是 (0,0,1)，两个都打不过。
+   症状：--el-color-primary 停留在 EP 默认蓝 #409eff（clean 模式尤其明显）。
+   本文件在 main.js 中晚于 EP 样式引入，故同级选择器按源顺序取胜。 */
+
+:root,
+html.dark {
+  --el-color-primary: var(--xv-primary);
+  --el-color-primary-light-3: color-mix(in srgb, var(--xv-primary) 70%, var(--xv-bg));
+  --el-color-primary-light-5: color-mix(in srgb, var(--xv-primary) 50%, var(--xv-bg));
+  --el-color-primary-light-7: color-mix(in srgb, var(--xv-primary) 30%, var(--xv-bg));
+  --el-color-primary-light-8: color-mix(in srgb, var(--xv-primary) 20%, var(--xv-bg));
+  --el-color-primary-light-9: color-mix(in srgb, var(--xv-primary) 12%, var(--xv-bg));
+  --el-color-primary-dark-2:  color-mix(in srgb, var(--xv-primary) 82%, #000);
+
+  --el-color-success: var(--xv-ok);
+  --el-color-success-light-3: color-mix(in srgb, var(--xv-ok) 70%, var(--xv-bg));
+  --el-color-success-light-5: color-mix(in srgb, var(--xv-ok) 50%, var(--xv-bg));
+  --el-color-success-light-8: color-mix(in srgb, var(--xv-ok) 20%, var(--xv-bg));
+  --el-color-success-light-9: color-mix(in srgb, var(--xv-ok) 12%, var(--xv-bg));
+
+  --el-color-warning: var(--xv-warn);
+  --el-color-warning-light-3: color-mix(in srgb, var(--xv-warn) 70%, var(--xv-bg));
+  --el-color-warning-light-5: color-mix(in srgb, var(--xv-warn) 50%, var(--xv-bg));
+  --el-color-warning-light-8: color-mix(in srgb, var(--xv-warn) 20%, var(--xv-bg));
+  --el-color-warning-light-9: color-mix(in srgb, var(--xv-warn) 12%, var(--xv-bg));
+
+  --el-color-danger: var(--xv-err);
+  --el-color-error:  var(--xv-err);
+  --el-color-danger-light-3: color-mix(in srgb, var(--xv-err) 70%, var(--xv-bg));
+  --el-color-danger-light-5: color-mix(in srgb, var(--xv-err) 50%, var(--xv-bg));
+  --el-color-danger-light-8: color-mix(in srgb, var(--xv-err) 20%, var(--xv-bg));
+  --el-color-danger-light-9: color-mix(in srgb, var(--xv-err) 12%, var(--xv-bg));
+  --el-color-error-light-3:  color-mix(in srgb, var(--xv-err) 70%, var(--xv-bg));
+  --el-color-error-light-9:  color-mix(in srgb, var(--xv-err) 12%, var(--xv-bg));
+
+  --el-color-info: var(--xv-info);
+  --el-color-info-light-3: color-mix(in srgb, var(--xv-info) 70%, var(--xv-bg));
+  --el-color-info-light-5: color-mix(in srgb, var(--xv-info) 50%, var(--xv-bg));
+  --el-color-info-light-8: color-mix(in srgb, var(--xv-info) 20%, var(--xv-bg));
+  --el-color-info-light-9: color-mix(in srgb, var(--xv-info) 12%, var(--xv-bg));
+
+  /* 底 / 面 / 边 / 字 */
+  --el-bg-color:          var(--xv-surface);
+  --el-bg-color-page:     var(--xv-bg);
+  --el-bg-color-overlay:  var(--xv-surface-2);
+  --el-fill-color:        var(--xv-surface-2);
+  --el-fill-color-light:  var(--xv-surface-2);
+  --el-fill-color-lighter:var(--xv-surface);
+  --el-fill-color-blank:  var(--xv-surface);
+  --el-fill-color-dark:   var(--xv-surface-3);
+  --el-fill-color-darker: var(--xv-surface-3);
+
+  --el-text-color-primary:   var(--xv-text);
+  --el-text-color-regular:   var(--xv-text-2);
+  --el-text-color-secondary: var(--xv-text-3);
+  --el-text-color-placeholder: var(--xv-text-3);
+  --el-text-color-disabled:  var(--xv-text-3);
+
+  --el-border-color:         var(--xv-border);
+  --el-border-color-light:   var(--xv-border);
+  --el-border-color-lighter: var(--xv-border);
+  --el-border-color-extra-light: var(--xv-border);
+  --el-border-color-hover:   var(--xv-border-2);
+  --el-border-color-darker:  var(--xv-border-2);
+  --el-border-radius-base:   var(--xv-r-sm);
+  --el-border-radius-small:  4px;
+
+  --el-mask-color: rgba(6, 7, 10, .78);
+  --el-box-shadow-light: var(--xv-shadow);
+  --el-box-shadow: var(--xv-shadow);
+
+  --el-font-family: var(--xv-sans);
+}
+
+/* ============ 3. 全局基础 ============ */
+html, body, #app { height: 100%; margin: 0; padding: 0; }
+
+body {
+  background: var(--xv-bg);
+  color: var(--xv-text);
+  font-family: var(--xv-sans);
+  font-size: 14px;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+/* 数字 / 日志 / 表格数据一律等宽：便于纵向对齐与快速扫读（仪表盘核心诉求） */
+.xv-num,
+.xv-mono,
+.kpi-value,
+.log-terminal,
+.log-pre,
+.echo-wrap,
+.result-values,
+pre,
+code,
+kbd,
+samp,
+.el-table__body-wrapper .el-table__cell,
+.el-descriptions__content {
+  font-family: var(--xv-mono);
+  font-variant-numeric: tabular-nums;
+  letter-spacing: -.01em;
+}
+
+/* 滚动条：细、暗、不抢视线 */
+::-webkit-scrollbar { width: 9px; height: 9px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb {
+  background: var(--xv-border-2);
+  border-radius: 5px;
+  border: 2px solid transparent;
+  background-clip: content-box;
+}
+::-webkit-scrollbar-thumb:hover { background-clip: content-box; background-color: var(--xv-text-3); }
+
+/* 选中态 */
+::selection { background: color-mix(in srgb, var(--xv-primary) 35%, transparent); color: var(--xv-text); }
+
+/* ============ 4. 通用表面（卡片层次靠深浅，不靠粗边框） ============ */
+.xv-card {
+  background: var(--xv-surface);
+  border: 1px solid var(--xv-border);
+  border-radius: var(--xv-r);
+  box-shadow: var(--xv-shadow);
+}
+
+.xv-card--flush { border: none; background: var(--xv-surface-2); }
+
+/* 卡片/面板标题 */
+.xv-card-title {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: .06em;
+  color: var(--xv-text-2);
+  text-transform: uppercase;
+}
+.xv-card-title::before {
+  content: "";
+  width: 3px;
+  height: 13px;
+  border-radius: 2px;
+  background: var(--xv-primary);
+}
+
+/* KPI 数字块 */
+.kpi {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  padding: 12px 14px;
+  background: var(--xv-surface-2);
+  border-radius: var(--xv-r);
+}
+.kpi-label { font-size: 12px; color: var(--xv-text-3); letter-spacing: .04em; }
+.kpi-value {
+  font-size: 26px;
+  font-weight: 700;
+  line-height: 1.15;
+  color: var(--xv-text);
+}
+.kpi-value.is-ok   { color: var(--xv-ok); }
+.kpi-value.is-warn { color: var(--xv-warn); }
+.kpi-value.is-err  { color: var(--xv-err); }
+.kpi-value.is-primary { color: var(--xv-primary); }
+.kpi-unit { font-size: 12px; color: var(--xv-text-3); margin-left: 4px; font-weight: 500; }
+
+/* 状态徽标 */
+.xv-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  height: 22px;
+  padding: 0 9px;
+  border-radius: 4px;
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: .03em;
+  background: var(--xv-surface-2);
+  color: var(--xv-text-2);
+}
+.xv-badge--ok   { color: var(--xv-ok);   background: color-mix(in srgb, var(--xv-ok) 14%, transparent); }
+.xv-badge--warn { color: var(--xv-warn); background: color-mix(in srgb, var(--xv-warn) 14%, transparent); }
+.xv-badge--err  { color: var(--xv-err);  background: color-mix(in srgb, var(--xv-err) 14%, transparent); }
+.xv-badge--info { color: var(--xv-info); background: color-mix(in srgb, var(--xv-info) 14%, transparent); }
+
+/* 状态指示灯：在线时缓慢呼吸 */
+.xv-dot {
+  width: 8px; height: 8px; border-radius: 50%;
+  background: var(--xv-text-3);
+  flex: none;
+}
+.xv-dot--ok   { background: var(--xv-ok);   box-shadow: 0 0 0 3px color-mix(in srgb, var(--xv-ok) 18%, transparent); }
+.xv-dot--err  { background: var(--xv-err);  box-shadow: 0 0 0 3px color-mix(in srgb, var(--xv-err) 18%, transparent); }
+.xv-dot--warn { background: var(--xv-warn); box-shadow: 0 0 0 3px color-mix(in srgb, var(--xv-warn) 18%, transparent); }
+.xv-dot--live { animation: xv-breathe 2.4s var(--xv-ease) infinite; }
+
+@keyframes xv-breathe {
+  0%, 100% { opacity: 1; }
+  50%      { opacity: .45; }
+}
+
+/* 告警 / 记录列表项 */
+.xv-row {
+  padding: 8px 12px;
+  border-radius: var(--xv-r-sm);
+  background: var(--xv-surface);
+  transition: background var(--xv-dur) var(--xv-ease), transform var(--xv-dur) var(--xv-ease);
+}
+.xv-row:hover { background: var(--xv-surface-2); }
+
+/* 异常行：红色左边条，确保不漏看 */
+.xv-row--alert {
+  background: color-mix(in srgb, var(--xv-err) 8%, var(--xv-surface));
+  border-left: 3px solid var(--xv-err);
+}
+.xv-row--ok { border-left: 3px solid var(--xv-ok); }
+
+/* ============ 5. Element Plus 细节收敛 ============ */
+.el-card {
+  border: 1px solid var(--xv-border);
+  border-radius: var(--xv-r);
+  background: var(--xv-surface);
+  --el-card-padding: 14px;
+}
+.el-card__header { border-bottom: 1px solid var(--xv-border); padding: 10px 14px; }
+
+.el-button {
+  border-radius: var(--xv-r-sm);
+  font-weight: 600;
+  transition: transform var(--xv-dur) var(--xv-ease),
+              background-color var(--xv-dur) var(--xv-ease),
+              border-color var(--xv-dur) var(--xv-ease),
+              box-shadow var(--xv-dur) var(--xv-ease);
+}
+/* 悬停轻微上浮 + 图标右移 2px */
+.el-button:not(.is-disabled):hover {
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px -6px rgba(0, 0, 0, .7);
+}
+.el-button .el-icon { transition: transform var(--xv-dur) var(--xv-ease); }
+.el-button:not(.is-disabled):hover .el-icon { transform: translateX(2px); }
+.el-button--primary {
+  --el-button-bg-color: var(--xv-primary);
+  --el-button-border-color: var(--xv-primary);
+  --el-button-text-color: var(--xv-on-primary);
+  --el-button-hover-bg-color: color-mix(in srgb, var(--xv-primary) 86%, #fff);
+  --el-button-hover-border-color: color-mix(in srgb, var(--xv-primary) 86%, #fff);
+  --el-button-hover-text-color: var(--xv-on-primary);
+  font-weight: 700;
+}
+
+.el-input__wrapper,
+.el-select__wrapper,
+.el-textarea__inner {
+  border-radius: var(--xv-r-sm);
+  box-shadow: 0 0 0 1px var(--xv-border) inset;
+  background: var(--xv-surface-2);
+  transition: box-shadow var(--xv-dur) var(--xv-ease), background-color var(--xv-dur) var(--xv-ease);
+}
+.el-input__wrapper:hover,
+.el-select__wrapper:hover { box-shadow: 0 0 0 1px var(--xv-border-2) inset; }
+.el-input__wrapper.is-focus,
+.el-select__wrapper.is-focused {
+  box-shadow: 0 0 0 1px var(--xv-primary) inset, 0 0 14px -6px var(--xv-primary);
+}
+
+.el-table {
+  --el-table-border-color: var(--xv-border);
+  --el-table-bg-color: transparent;
+  --el-table-tr-bg-color: transparent;
+  --el-table-header-bg-color: var(--xv-surface-2);
+  --el-table-header-text-color: var(--xv-text-2);
+  --el-table-row-hover-bg-color: var(--xv-surface-2);
+  background: transparent;
+  font-size: 13px;
+}
+.el-table th.el-table__cell {
+  font-weight: 600;
+  letter-spacing: .04em;
+  text-transform: uppercase;
+  font-size: 12px;
+}
+.el-table td.el-table__cell { border-bottom: 1px solid var(--xv-border); }
+.el-table__body tr:hover > td.el-table__cell { transition: background var(--xv-dur) var(--xv-ease); }
+
+.el-tag {
+  border-radius: 4px;
+  font-weight: 600;
+  border: 1px solid transparent;
+}
+
+.el-tabs__item { font-weight: 600; letter-spacing: .02em; transition: color var(--xv-dur) var(--xv-ease); }
+.el-tabs__nav-wrap::after { background: var(--xv-border); }
+.el-tabs__active-bar { background: var(--xv-primary); }
+
+.el-dialog,
+.el-drawer { background: var(--xv-surface); border: 1px solid var(--xv-border); }
+.el-dialog__title, .el-drawer__title { color: var(--xv-text); font-weight: 700; }
+
+.el-descriptions__label { color: var(--xv-text-3) !important; font-weight: 600; }
+.el-descriptions__content { color: var(--xv-text) !important; }
+
+.el-pagination { --el-pagination-bg-color: transparent; --el-pagination-button-bg-color: var(--xv-surface-2); }
+.el-progress-bar__outer { background: var(--xv-surface-3); }
+
+.el-menu { border-right: none; background: transparent; }
+.el-message-box { background: var(--xv-surface); border: 1px solid var(--xv-border); }
+.el-popper.is-light { background: var(--xv-surface-2); border-color: var(--xv-border); color: var(--xv-text); }
+.el-select-dropdown__item.is-selected { color: var(--xv-primary); font-weight: 700; }
+
+/* ============ 6. 动效降级（可访问性） ============ */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: .01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: .01ms !important;
+    scroll-behavior: auto !important;
+  }
+  .el-button:not(.is-disabled):hover,
+  .el-button:not(.is-disabled):hover .el-icon { transform: none !important; }
+}
+
+/* 供 JS 读取的“当前是否减弱动效”提示（非必需，仅调试用） */
+html[data-xv-reduced="1"] .xv-dot--live { animation: none; }

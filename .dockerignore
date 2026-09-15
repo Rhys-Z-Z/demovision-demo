@@ -1,0 +1,13 @@
+.git
+.gitignore
+Dockerfile
+README.md
+install.sh
+**/__pycache__
+**/*.py[cod]
+backend/pipdeps
+frontend/node_modules
+frontend/.vite
+**/.pytest_cache
+demo_data
+*.db

@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-xv-mode="dash" class="dark">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>DemoVision 设备质检平台</title>
+    <script>
+      // 首屏前置应用显示模式，避免主题闪烁（FOUC）
+      (function () {
+        try {
+          var m = localStorage.getItem('xv-display-mode') || 'dash'
+          if (m !== 'dash' && m !== 'contrast' && m !== 'clean') m = 'dash'
+          var el = document.documentElement
+          el.setAttribute('data-xv-mode', m)
+          el.classList.toggle('dark', m !== 'clean')
+        } catch (e) { /* 忽略：回退默认深色 */ }
+      })()
+    </script>
+  </head>
+  <body>
+    <div id="app"></div>
+    <script type="module" src="/src/main.js"></script>
+  </body>
+</html>
