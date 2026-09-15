@@ -2,18 +2,18 @@
  * 主题工具 —— 把设计 token（CSS 变量）喂给 ECharts 等 canvas 渲染。
  *
  * 为什么需要它：CSS 变量对 <canvas> 无效，图表的轴/网格/曲线颜色必须在运行时
- * 从 :root 读取。显示模式切换时 App.vue 会派发 `xv-mode-change` 事件，
+ * 从 :root 读取。显示模式切换时 App.vue 会派发 `dv-mode-change` 事件，
  * 图表组件监听后重新应用外观即可跟随主题（暗色 / 高对比 / 洁净室）。
  */
 
-export const XV_MODE_EVENT = 'xv-mode-change'
-export const XV_MODE_KEY = 'xv-display-mode'
+export const XV_MODE_EVENT = 'dv-mode-change'
+export const XV_MODE_KEY = 'dv-display-mode'
 
 /** 读取单个设计 token（返回原始字符串，未定义时回退） */
-export function xvColor(name, fallback = '#888888') {
+export function dvColor(name, fallback = '#888888') {
   if (typeof document === 'undefined') return fallback
   const v = getComputedStyle(document.documentElement)
-    .getPropertyValue('--xv-' + name)
+    .getPropertyValue('--dv-' + name)
     .trim()
   return v || fallback
 }
@@ -24,33 +24,33 @@ export function xvColor(name, fallback = '#888888') {
  */
 export function chartSkin() {
   return {
-    text: xvColor('text', '#E8EEF4'),
-    text2: xvColor('text-2', '#A9B5C4'),
-    grid: xvColor('border', '#232734'),
-    border: xvColor('border-2', '#2E3444'),
-    surface: xvColor('surface-2', '#181B24'),
-    bg: xvColor('bg', '#0B0C10'),
+    text: dvColor('text', '#E8EEF4'),
+    text2: dvColor('text-2', '#A9B5C4'),
+    grid: dvColor('border', '#232734'),
+    border: dvColor('border-2', '#2E3444'),
+    surface: dvColor('surface-2', '#181B24'),
+    bg: dvColor('bg', '#0B0C10'),
   }
 }
 
 /** 信号色顺序：信息 → 正常 → 告警 → 主色 → 异常 → 紫（备用） */
 export function chartPalette() {
   return [
-    xvColor('info', '#59B6FF'),
-    xvColor('ok', '#2DD4A0'),
-    xvColor('warn', '#F5B041'),
-    xvColor('primary', '#00E5C9'),
-    xvColor('err', '#FF5A6A'),
+    dvColor('info', '#59B6FF'),
+    dvColor('ok', '#2DD4A0'),
+    dvColor('warn', '#F5B041'),
+    dvColor('primary', '#00E5C9'),
+    dvColor('err', '#FF5A6A'),
     '#B58CFF',
   ]
 }
 
 /** 网格线：用 token 色 + 极低透明度，避免抢视线 */
 export function gridLineStyle(opacity = 0.5) {
-  return { color: xvColor('border', '#232734'), opacity, type: 'dashed' }
+  return { color: dvColor('border', '#232734'), opacity, type: 'dashed' }
 }
 
-/** 提示框外观（与 .xv-card 一致：surface-2 底 + 细边） */
+/** 提示框外观（与 .dv-card 一致：surface-2 底 + 细边） */
 export function tooltipSkin() {
   const s = chartSkin()
   return {
@@ -66,7 +66,7 @@ export function tooltipSkin() {
 export function applyDisplayMode(mode) {
   const m = ['dash', 'contrast', 'clean'].includes(mode) ? mode : 'dash'
   const el = document.documentElement
-  el.setAttribute('data-xv-mode', m)
+  el.setAttribute('data-dv-mode', m)
   el.classList.toggle('dark', m !== 'clean')
   try {
     localStorage.setItem(XV_MODE_KEY, m)

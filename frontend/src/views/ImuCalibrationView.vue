@@ -211,7 +211,7 @@ onBeforeUnmount(() => {
 .usb-tip {
   margin-top: 6px;
   font-size: 12px;
-  color: var(--xv-warn);
+  color: var(--dv-warn);
   line-height: 1.5;
 }
 .task-state {
@@ -220,14 +220,14 @@ onBeforeUnmount(() => {
 .result-card {
   margin-top: 14px;
   padding: 12px;
-  background: var(--xv-surface);
-  border: 1px solid var(--xv-border);
+  background: var(--dv-surface);
+  border: 1px solid var(--dv-border);
   border-radius: 8px;
 }
 .result-title {
   font-weight: 600;
   margin-bottom: 10px;
-  color: var(--xv-text);
+  color: var(--dv-text);
 }
 .result-row {
   display: flex;
@@ -237,11 +237,11 @@ onBeforeUnmount(() => {
   margin-bottom: 8px;
 }
 .result-label {
-  color: var(--xv-text-2);
+  color: var(--dv-text-2);
 }
 .result-values {
   font-family: 'JetBrains Mono', 'Consolas', monospace;
-  color: var(--xv-warn);
+  color: var(--dv-warn);
 }
 .result-actions {
   display: flex;

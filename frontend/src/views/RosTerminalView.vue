@@ -416,8 +416,8 @@ onBeforeUnmount(() => {
   gap: 12px;
 }
 .topic-aside {
-  background: var(--xv-surface);
-  border: 1px solid var(--xv-border);
+  background: var(--dv-surface);
+  border: 1px solid var(--dv-border);
   border-radius: 8px;
   display: flex;
   flex-direction: column;
@@ -435,10 +435,10 @@ onBeforeUnmount(() => {
 .topic-tree {
   flex: 1;
   overflow: auto;
-  border: 1px solid var(--xv-border);
+  border: 1px solid var(--dv-border);
   border-radius: 6px;
   padding: 6px;
-  background: var(--xv-bg);
+  background: var(--dv-bg);
 }
 .topic-tree :deep(.el-tree-node__content) {
   height: 28px;
@@ -446,15 +446,15 @@ onBeforeUnmount(() => {
 .topic-footer {
   margin-top: 10px;
   padding-top: 10px;
-  border-top: 1px solid var(--xv-border);
+  border-top: 1px solid var(--dv-border);
   min-height: 92px;
 }
 .selected-topic {
   font-family: 'JetBrains Mono', 'Consolas', monospace;
   font-size: 12px;
-  color: var(--xv-text);
-  background: var(--xv-bg);
-  border: 1px solid var(--xv-border);
+  color: var(--dv-text);
+  background: var(--dv-bg);
+  border: 1px solid var(--dv-border);
   border-radius: 4px;
   padding: 6px 8px;
   white-space: nowrap;
@@ -488,12 +488,12 @@ onBeforeUnmount(() => {
   height: 100%;
   border-radius: 8px;
   overflow: hidden;
-  border: 1px solid var(--xv-border);
+  border: 1px solid var(--dv-border);
 }
 .hz-wrap {
   height: 100%;
-  background: var(--xv-surface);
-  border: 1px solid var(--xv-border);
+  background: var(--dv-surface);
+  border: 1px solid var(--dv-border);
   border-radius: 8px;
   display: flex;
   flex-direction: column;
@@ -504,7 +504,7 @@ onBeforeUnmount(() => {
   align-items: center;
   justify-content: space-between;
   padding: 12px 16px;
-  border-bottom: 1px solid var(--xv-border);
+  border-bottom: 1px solid var(--dv-border);
 }
 .hz-value {
   display: flex;
@@ -514,16 +514,16 @@ onBeforeUnmount(() => {
 .hz-num {
   font-size: 32px;
   font-weight: 700;
-  color: var(--xv-warn);
+  color: var(--dv-warn);
   font-family: 'JetBrains Mono', 'Consolas', monospace;
 }
 .hz-unit {
   font-size: 14px;
-  color: var(--xv-text-2);
+  color: var(--dv-text-2);
 }
 .hz-topic {
   font-size: 12px;
-  color: var(--xv-text-2);
+  color: var(--dv-text-2);
   font-family: 'JetBrains Mono', 'Consolas', monospace;
   max-width: 60%;
   white-space: nowrap;

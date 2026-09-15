@@ -4,120 +4,120 @@
  * 气质：航空驾驶舱 / 高端运动手表 / 实验室仪器。
  *      暗底、高对比信号色、数字突出、层级清晰；利落直角 + 8px 小圆角。
  *
- * 三种显示模式（html[data-xv-mode]）：
+ * 三种显示模式（html[data-dv-mode]）：
  *   dash      深色精密仪表（默认）
  *   contrast  高对比（强光 / 远距离 / 大屏扫读）
  *   clean     洁净室（明亮环境，亮底）
  *
- * 约定：所有 --xv-* 是设计 token，业务样式只用 token；
+ * 约定：所有 --dv-* 是设计 token，业务样式只用 token；
  *      --el-* 由 token 反向接管 Element Plus，避免蓝色残留。
  * ============================================================ */
 
 /* ============ 1. 设计 token ============ */
 
 :root,
-html[data-xv-mode="dash"] {
+html[data-dv-mode="dash"] {
   color-scheme: dark;
 
   /* 表面层次（几乎不用粗边框，靠表面深浅区分） */
-  --xv-bg:        #0B0C10;
-  --xv-surface:   #12141A;
-  --xv-surface-2: #181B24;
-  --xv-surface-3: #1E2230;
-  --xv-border:    #232734;
-  --xv-border-2:  #2E3444;
+  --dv-bg:        #0B0C10;
+  --dv-surface:   #12141A;
+  --dv-surface-2: #181B24;
+  --dv-surface-3: #1E2230;
+  --dv-border:    #232734;
+  --dv-border-2:  #2E3444;
 
   /* 品牌 / 信号色 */
-  --xv-primary:    #00E5C9;
-  --xv-on-primary: #00201C;
-  --xv-info:       #59B6FF;
-  --xv-ok:         #2DD4A0;
-  --xv-warn:       #F5B041;
-  --xv-err:        #FF5A6A;
+  --dv-primary:    #00E5C9;
+  --dv-on-primary: #00201C;
+  --dv-info:       #59B6FF;
+  --dv-ok:         #2DD4A0;
+  --dv-warn:       #F5B041;
+  --dv-err:        #FF5A6A;
 
   /* 文字层级 */
-  --xv-text:   #E8EEF4;
-  --xv-text-2: #A9B5C4;
-  --xv-text-3: #6D798A;
+  --dv-text:   #E8EEF4;
+  --dv-text-2: #A9B5C4;
+  --dv-text-3: #6D798A;
 
   /* 形状 / 深度 / 动效 */
-  --xv-r:        8px;
-  --xv-r-sm:     6px;
-  --xv-shadow:   0 2px 12px rgba(0, 0, 0, .45);
-  --xv-glow:     0 0 0 1px rgba(0, 229, 201, .30), 0 0 18px -6px rgba(0, 229, 201, .55);
-  --xv-dur:      240ms;
-  --xv-ease:     cubic-bezier(.4, 0, .2, 1);
+  --dv-r:        8px;
+  --dv-r-sm:     6px;
+  --dv-shadow:   0 2px 12px rgba(0, 0, 0, .45);
+  --dv-glow:     0 0 0 1px rgba(0, 229, 201, .30), 0 0 18px -6px rgba(0, 229, 201, .55);
+  --dv-dur:      240ms;
+  --dv-ease:     cubic-bezier(.4, 0, .2, 1);
 
   /* 水印强度（署名「不刻意」→ 极低对比） */
-  --xv-wm-opacity:   .045;
-  --xv-sign-opacity: .10;
+  --dv-wm-opacity:   .045;
+  --dv-sign-opacity: .10;
 
   /* 字体（JetBrains Mono 随 dist 自包含打包，无外网依赖）
      末尾追加中文 sans：JetBrains Mono 无中日韩字形，数字/拉丁走等宽，
      中文自动回退到系统中文 sans，避免整段掉进难看的等宽中文回退。 */
-  --xv-mono: "JetBrains Mono", ui-monospace, "Cascadia Mono", "SF Mono",
+  --dv-mono: "JetBrains Mono", ui-monospace, "Cascadia Mono", "SF Mono",
              Menlo, Consolas, "Liberation Mono", monospace,
              "Noto Sans SC", "PingFang SC", "Microsoft YaHei", sans-serif;
-  --xv-sans: -apple-system, BlinkMacSystemFont, "Segoe UI", "Noto Sans SC",
+  --dv-sans: -apple-system, BlinkMacSystemFont, "Segoe UI", "Noto Sans SC",
              "PingFang SC", "Microsoft YaHei", Roboto, "Helvetica Neue", sans-serif;
 }
 
 /* ---- 高对比：强光 / 远距离 ---- */
-html[data-xv-mode="contrast"] {
+html[data-dv-mode="contrast"] {
   color-scheme: dark;
 
-  --xv-bg:        #000000;
-  --xv-surface:   #0A0B0F;
-  --xv-surface-2: #14171E;
-  --xv-surface-3: #1C2028;
-  --xv-border:    #3B4252;
-  --xv-border-2:  #565F73;
+  --dv-bg:        #000000;
+  --dv-surface:   #0A0B0F;
+  --dv-surface-2: #14171E;
+  --dv-surface-3: #1C2028;
+  --dv-border:    #3B4252;
+  --dv-border-2:  #565F73;
 
-  --xv-primary:    #00FFDC;
-  --xv-on-primary: #001512;
-  --xv-info:       #7FC8FF;
-  --xv-ok:         #3BF0B4;
-  --xv-warn:       #FFC24D;
-  --xv-err:        #FF7A88;
+  --dv-primary:    #00FFDC;
+  --dv-on-primary: #001512;
+  --dv-info:       #7FC8FF;
+  --dv-ok:         #3BF0B4;
+  --dv-warn:       #FFC24D;
+  --dv-err:        #FF7A88;
 
-  --xv-text:   #FFFFFF;
-  --xv-text-2: #CBD5E1;
-  --xv-text-3: #94A1B2;
+  --dv-text:   #FFFFFF;
+  --dv-text-2: #CBD5E1;
+  --dv-text-3: #94A1B2;
 
-  --xv-shadow: 0 2px 14px rgba(0, 0, 0, .8);
-  --xv-glow:   0 0 0 2px rgba(0, 255, 220, .55), 0 0 20px -4px rgba(0, 255, 220, .7);
+  --dv-shadow: 0 2px 14px rgba(0, 0, 0, .8);
+  --dv-glow:   0 0 0 2px rgba(0, 255, 220, .55), 0 0 20px -4px rgba(0, 255, 220, .7);
 
-  --xv-wm-opacity:   .07;
-  --xv-sign-opacity: .22;
+  --dv-wm-opacity:   .07;
+  --dv-sign-opacity: .22;
 }
 
 /* ---- 洁净室：明亮环境 ---- */
-html[data-xv-mode="clean"] {
+html[data-dv-mode="clean"] {
   color-scheme: light;
 
-  --xv-bg:        #EDF0F4;
-  --xv-surface:   #FFFFFF;
-  --xv-surface-2: #F5F7FA;
-  --xv-surface-3: #EAEEF3;
-  --xv-border:    #D3DAE3;
-  --xv-border-2:  #BCC6D2;
+  --dv-bg:        #EDF0F4;
+  --dv-surface:   #FFFFFF;
+  --dv-surface-2: #F5F7FA;
+  --dv-surface-3: #EAEEF3;
+  --dv-border:    #D3DAE3;
+  --dv-border-2:  #BCC6D2;
 
-  --xv-primary:    #00857A;
-  --xv-on-primary: #FFFFFF;
-  --xv-info:       #1B6FC4;
-  --xv-ok:         #12855F;
-  --xv-warn:       #A9660A;
-  --xv-err:        #C42D3F;
+  --dv-primary:    #00857A;
+  --dv-on-primary: #FFFFFF;
+  --dv-info:       #1B6FC4;
+  --dv-ok:         #12855F;
+  --dv-warn:       #A9660A;
+  --dv-err:        #C42D3F;
 
-  --xv-text:   #16202B;
-  --xv-text-2: #4A5768;
-  --xv-text-3: #7B8798;
+  --dv-text:   #16202B;
+  --dv-text-2: #4A5768;
+  --dv-text-3: #7B8798;
 
-  --xv-shadow: 0 1px 6px rgba(23, 34, 48, .10);
-  --xv-glow:   0 0 0 2px rgba(0, 133, 122, .22);
+  --dv-shadow: 0 1px 6px rgba(23, 34, 48, .10);
+  --dv-glow:   0 0 0 2px rgba(0, 133, 122, .22);
 
-  --xv-wm-opacity:   .05;
-  --xv-sign-opacity: .14;
+  --dv-wm-opacity:   .05;
+  --dv-sign-opacity: .14;
 }
 
 /* ============ 2. 接管 Element Plus ============ */
@@ -131,89 +131,89 @@ html[data-xv-mode="clean"] {
 
 :root,
 html.dark {
-  --el-color-primary: var(--xv-primary);
-  --el-color-primary-light-3: color-mix(in srgb, var(--xv-primary) 70%, var(--xv-bg));
-  --el-color-primary-light-5: color-mix(in srgb, var(--xv-primary) 50%, var(--xv-bg));
-  --el-color-primary-light-7: color-mix(in srgb, var(--xv-primary) 30%, var(--xv-bg));
-  --el-color-primary-light-8: color-mix(in srgb, var(--xv-primary) 20%, var(--xv-bg));
-  --el-color-primary-light-9: color-mix(in srgb, var(--xv-primary) 12%, var(--xv-bg));
-  --el-color-primary-dark-2:  color-mix(in srgb, var(--xv-primary) 82%, #000);
+  --el-color-primary: var(--dv-primary);
+  --el-color-primary-light-3: color-mix(in srgb, var(--dv-primary) 70%, var(--dv-bg));
+  --el-color-primary-light-5: color-mix(in srgb, var(--dv-primary) 50%, var(--dv-bg));
+  --el-color-primary-light-7: color-mix(in srgb, var(--dv-primary) 30%, var(--dv-bg));
+  --el-color-primary-light-8: color-mix(in srgb, var(--dv-primary) 20%, var(--dv-bg));
+  --el-color-primary-light-9: color-mix(in srgb, var(--dv-primary) 12%, var(--dv-bg));
+  --el-color-primary-dark-2:  color-mix(in srgb, var(--dv-primary) 82%, #000);
 
-  --el-color-success: var(--xv-ok);
-  --el-color-success-light-3: color-mix(in srgb, var(--xv-ok) 70%, var(--xv-bg));
-  --el-color-success-light-5: color-mix(in srgb, var(--xv-ok) 50%, var(--xv-bg));
-  --el-color-success-light-8: color-mix(in srgb, var(--xv-ok) 20%, var(--xv-bg));
-  --el-color-success-light-9: color-mix(in srgb, var(--xv-ok) 12%, var(--xv-bg));
+  --el-color-success: var(--dv-ok);
+  --el-color-success-light-3: color-mix(in srgb, var(--dv-ok) 70%, var(--dv-bg));
+  --el-color-success-light-5: color-mix(in srgb, var(--dv-ok) 50%, var(--dv-bg));
+  --el-color-success-light-8: color-mix(in srgb, var(--dv-ok) 20%, var(--dv-bg));
+  --el-color-success-light-9: color-mix(in srgb, var(--dv-ok) 12%, var(--dv-bg));
 
-  --el-color-warning: var(--xv-warn);
-  --el-color-warning-light-3: color-mix(in srgb, var(--xv-warn) 70%, var(--xv-bg));
-  --el-color-warning-light-5: color-mix(in srgb, var(--xv-warn) 50%, var(--xv-bg));
-  --el-color-warning-light-8: color-mix(in srgb, var(--xv-warn) 20%, var(--xv-bg));
-  --el-color-warning-light-9: color-mix(in srgb, var(--xv-warn) 12%, var(--xv-bg));
+  --el-color-warning: var(--dv-warn);
+  --el-color-warning-light-3: color-mix(in srgb, var(--dv-warn) 70%, var(--dv-bg));
+  --el-color-warning-light-5: color-mix(in srgb, var(--dv-warn) 50%, var(--dv-bg));
+  --el-color-warning-light-8: color-mix(in srgb, var(--dv-warn) 20%, var(--dv-bg));
+  --el-color-warning-light-9: color-mix(in srgb, var(--dv-warn) 12%, var(--dv-bg));
 
-  --el-color-danger: var(--xv-err);
-  --el-color-error:  var(--xv-err);
-  --el-color-danger-light-3: color-mix(in srgb, var(--xv-err) 70%, var(--xv-bg));
-  --el-color-danger-light-5: color-mix(in srgb, var(--xv-err) 50%, var(--xv-bg));
-  --el-color-danger-light-8: color-mix(in srgb, var(--xv-err) 20%, var(--xv-bg));
-  --el-color-danger-light-9: color-mix(in srgb, var(--xv-err) 12%, var(--xv-bg));
-  --el-color-error-light-3:  color-mix(in srgb, var(--xv-err) 70%, var(--xv-bg));
-  --el-color-error-light-9:  color-mix(in srgb, var(--xv-err) 12%, var(--xv-bg));
+  --el-color-danger: var(--dv-err);
+  --el-color-error:  var(--dv-err);
+  --el-color-danger-light-3: color-mix(in srgb, var(--dv-err) 70%, var(--dv-bg));
+  --el-color-danger-light-5: color-mix(in srgb, var(--dv-err) 50%, var(--dv-bg));
+  --el-color-danger-light-8: color-mix(in srgb, var(--dv-err) 20%, var(--dv-bg));
+  --el-color-danger-light-9: color-mix(in srgb, var(--dv-err) 12%, var(--dv-bg));
+  --el-color-error-light-3:  color-mix(in srgb, var(--dv-err) 70%, var(--dv-bg));
+  --el-color-error-light-9:  color-mix(in srgb, var(--dv-err) 12%, var(--dv-bg));
 
-  --el-color-info: var(--xv-info);
-  --el-color-info-light-3: color-mix(in srgb, var(--xv-info) 70%, var(--xv-bg));
-  --el-color-info-light-5: color-mix(in srgb, var(--xv-info) 50%, var(--xv-bg));
-  --el-color-info-light-8: color-mix(in srgb, var(--xv-info) 20%, var(--xv-bg));
-  --el-color-info-light-9: color-mix(in srgb, var(--xv-info) 12%, var(--xv-bg));
+  --el-color-info: var(--dv-info);
+  --el-color-info-light-3: color-mix(in srgb, var(--dv-info) 70%, var(--dv-bg));
+  --el-color-info-light-5: color-mix(in srgb, var(--dv-info) 50%, var(--dv-bg));
+  --el-color-info-light-8: color-mix(in srgb, var(--dv-info) 20%, var(--dv-bg));
+  --el-color-info-light-9: color-mix(in srgb, var(--dv-info) 12%, var(--dv-bg));
 
   /* 底 / 面 / 边 / 字 */
-  --el-bg-color:          var(--xv-surface);
-  --el-bg-color-page:     var(--xv-bg);
-  --el-bg-color-overlay:  var(--xv-surface-2);
-  --el-fill-color:        var(--xv-surface-2);
-  --el-fill-color-light:  var(--xv-surface-2);
-  --el-fill-color-lighter:var(--xv-surface);
-  --el-fill-color-blank:  var(--xv-surface);
-  --el-fill-color-dark:   var(--xv-surface-3);
-  --el-fill-color-darker: var(--xv-surface-3);
+  --el-bg-color:          var(--dv-surface);
+  --el-bg-color-page:     var(--dv-bg);
+  --el-bg-color-overlay:  var(--dv-surface-2);
+  --el-fill-color:        var(--dv-surface-2);
+  --el-fill-color-light:  var(--dv-surface-2);
+  --el-fill-color-lighter:var(--dv-surface);
+  --el-fill-color-blank:  var(--dv-surface);
+  --el-fill-color-dark:   var(--dv-surface-3);
+  --el-fill-color-darker: var(--dv-surface-3);
 
-  --el-text-color-primary:   var(--xv-text);
-  --el-text-color-regular:   var(--xv-text-2);
-  --el-text-color-secondary: var(--xv-text-3);
-  --el-text-color-placeholder: var(--xv-text-3);
-  --el-text-color-disabled:  var(--xv-text-3);
+  --el-text-color-primary:   var(--dv-text);
+  --el-text-color-regular:   var(--dv-text-2);
+  --el-text-color-secondary: var(--dv-text-3);
+  --el-text-color-placeholder: var(--dv-text-3);
+  --el-text-color-disabled:  var(--dv-text-3);
 
-  --el-border-color:         var(--xv-border);
-  --el-border-color-light:   var(--xv-border);
-  --el-border-color-lighter: var(--xv-border);
-  --el-border-color-extra-light: var(--xv-border);
-  --el-border-color-hover:   var(--xv-border-2);
-  --el-border-color-darker:  var(--xv-border-2);
-  --el-border-radius-base:   var(--xv-r-sm);
+  --el-border-color:         var(--dv-border);
+  --el-border-color-light:   var(--dv-border);
+  --el-border-color-lighter: var(--dv-border);
+  --el-border-color-extra-light: var(--dv-border);
+  --el-border-color-hover:   var(--dv-border-2);
+  --el-border-color-darker:  var(--dv-border-2);
+  --el-border-radius-base:   var(--dv-r-sm);
   --el-border-radius-small:  4px;
 
   --el-mask-color: rgba(6, 7, 10, .78);
-  --el-box-shadow-light: var(--xv-shadow);
-  --el-box-shadow: var(--xv-shadow);
+  --el-box-shadow-light: var(--dv-shadow);
+  --el-box-shadow: var(--dv-shadow);
 
-  --el-font-family: var(--xv-sans);
+  --el-font-family: var(--dv-sans);
 }
 
 /* ============ 3. 全局基础 ============ */
 html, body, #app { height: 100%; margin: 0; padding: 0; }
 
 body {
-  background: var(--xv-bg);
-  color: var(--xv-text);
-  font-family: var(--xv-sans);
+  background: var(--dv-bg);
+  color: var(--dv-text);
+  font-family: var(--dv-sans);
   font-size: 14px;
   -webkit-font-smoothing: antialiased;
   text-rendering: optimizeLegibility;
 }
 
 /* 数字 / 日志 / 表格数据一律等宽：便于纵向对齐与快速扫读（仪表盘核心诉求） */
-.xv-num,
-.xv-mono,
+.dv-num,
+.dv-mono,
 .kpi-value,
 .log-terminal,
 .log-pre,
@@ -225,7 +225,7 @@ kbd,
 samp,
 .el-table__body-wrapper .el-table__cell,
 .el-descriptions__content {
-  font-family: var(--xv-mono);
+  font-family: var(--dv-mono);
   font-variant-numeric: tabular-nums;
   letter-spacing: -.01em;
 }
@@ -234,43 +234,43 @@ samp,
 ::-webkit-scrollbar { width: 9px; height: 9px; }
 ::-webkit-scrollbar-track { background: transparent; }
 ::-webkit-scrollbar-thumb {
-  background: var(--xv-border-2);
+  background: var(--dv-border-2);
   border-radius: 5px;
   border: 2px solid transparent;
   background-clip: content-box;
 }
-::-webkit-scrollbar-thumb:hover { background-clip: content-box; background-color: var(--xv-text-3); }
+::-webkit-scrollbar-thumb:hover { background-clip: content-box; background-color: var(--dv-text-3); }
 
 /* 选中态 */
-::selection { background: color-mix(in srgb, var(--xv-primary) 35%, transparent); color: var(--xv-text); }
+::selection { background: color-mix(in srgb, var(--dv-primary) 35%, transparent); color: var(--dv-text); }
 
 /* ============ 4. 通用表面（卡片层次靠深浅，不靠粗边框） ============ */
-.xv-card {
-  background: var(--xv-surface);
-  border: 1px solid var(--xv-border);
-  border-radius: var(--xv-r);
-  box-shadow: var(--xv-shadow);
+.dv-card {
+  background: var(--dv-surface);
+  border: 1px solid var(--dv-border);
+  border-radius: var(--dv-r);
+  box-shadow: var(--dv-shadow);
 }
 
-.xv-card--flush { border: none; background: var(--xv-surface-2); }
+.dv-card--flush { border: none; background: var(--dv-surface-2); }
 
 /* 卡片/面板标题 */
-.xv-card-title {
+.dv-card-title {
   display: flex;
   align-items: center;
   gap: 8px;
   font-size: 13px;
   font-weight: 600;
   letter-spacing: .06em;
-  color: var(--xv-text-2);
+  color: var(--dv-text-2);
   text-transform: uppercase;
 }
-.xv-card-title::before {
+.dv-card-title::before {
   content: "";
   width: 3px;
   height: 13px;
   border-radius: 2px;
-  background: var(--xv-primary);
+  background: var(--dv-primary);
 }
 
 /* KPI 数字块 */
@@ -279,24 +279,24 @@ samp,
   flex-direction: column;
   gap: 2px;
   padding: 12px 14px;
-  background: var(--xv-surface-2);
-  border-radius: var(--xv-r);
+  background: var(--dv-surface-2);
+  border-radius: var(--dv-r);
 }
-.kpi-label { font-size: 12px; color: var(--xv-text-3); letter-spacing: .04em; }
+.kpi-label { font-size: 12px; color: var(--dv-text-3); letter-spacing: .04em; }
 .kpi-value {
   font-size: 26px;
   font-weight: 700;
   line-height: 1.15;
-  color: var(--xv-text);
+  color: var(--dv-text);
 }
-.kpi-value.is-ok   { color: var(--xv-ok); }
-.kpi-value.is-warn { color: var(--xv-warn); }
-.kpi-value.is-err  { color: var(--xv-err); }
-.kpi-value.is-primary { color: var(--xv-primary); }
-.kpi-unit { font-size: 12px; color: var(--xv-text-3); margin-left: 4px; font-weight: 500; }
+.kpi-value.is-ok   { color: var(--dv-ok); }
+.kpi-value.is-warn { color: var(--dv-warn); }
+.kpi-value.is-err  { color: var(--dv-err); }
+.kpi-value.is-primary { color: var(--dv-primary); }
+.kpi-unit { font-size: 12px; color: var(--dv-text-3); margin-left: 4px; font-weight: 500; }
 
 /* 状态徽标 */
-.xv-badge {
+.dv-badge {
   display: inline-flex;
   align-items: center;
   gap: 6px;
@@ -306,102 +306,102 @@ samp,
   font-size: 12px;
   font-weight: 600;
   letter-spacing: .03em;
-  background: var(--xv-surface-2);
-  color: var(--xv-text-2);
+  background: var(--dv-surface-2);
+  color: var(--dv-text-2);
 }
-.xv-badge--ok   { color: var(--xv-ok);   background: color-mix(in srgb, var(--xv-ok) 14%, transparent); }
-.xv-badge--warn { color: var(--xv-warn); background: color-mix(in srgb, var(--xv-warn) 14%, transparent); }
-.xv-badge--err  { color: var(--xv-err);  background: color-mix(in srgb, var(--xv-err) 14%, transparent); }
-.xv-badge--info { color: var(--xv-info); background: color-mix(in srgb, var(--xv-info) 14%, transparent); }
+.dv-badge--ok   { color: var(--dv-ok);   background: color-mix(in srgb, var(--dv-ok) 14%, transparent); }
+.dv-badge--warn { color: var(--dv-warn); background: color-mix(in srgb, var(--dv-warn) 14%, transparent); }
+.dv-badge--err  { color: var(--dv-err);  background: color-mix(in srgb, var(--dv-err) 14%, transparent); }
+.dv-badge--info { color: var(--dv-info); background: color-mix(in srgb, var(--dv-info) 14%, transparent); }
 
 /* 状态指示灯：在线时缓慢呼吸 */
-.xv-dot {
+.dv-dot {
   width: 8px; height: 8px; border-radius: 50%;
-  background: var(--xv-text-3);
+  background: var(--dv-text-3);
   flex: none;
 }
-.xv-dot--ok   { background: var(--xv-ok);   box-shadow: 0 0 0 3px color-mix(in srgb, var(--xv-ok) 18%, transparent); }
-.xv-dot--err  { background: var(--xv-err);  box-shadow: 0 0 0 3px color-mix(in srgb, var(--xv-err) 18%, transparent); }
-.xv-dot--warn { background: var(--xv-warn); box-shadow: 0 0 0 3px color-mix(in srgb, var(--xv-warn) 18%, transparent); }
-.xv-dot--live { animation: xv-breathe 2.4s var(--xv-ease) infinite; }
+.dv-dot--ok   { background: var(--dv-ok);   box-shadow: 0 0 0 3px color-mix(in srgb, var(--dv-ok) 18%, transparent); }
+.dv-dot--err  { background: var(--dv-err);  box-shadow: 0 0 0 3px color-mix(in srgb, var(--dv-err) 18%, transparent); }
+.dv-dot--warn { background: var(--dv-warn); box-shadow: 0 0 0 3px color-mix(in srgb, var(--dv-warn) 18%, transparent); }
+.dv-dot--live { animation: dv-breathe 2.4s var(--dv-ease) infinite; }
 
-@keyframes xv-breathe {
+@keyframes dv-breathe {
   0%, 100% { opacity: 1; }
   50%      { opacity: .45; }
 }
 
 /* 告警 / 记录列表项 */
-.xv-row {
+.dv-row {
   padding: 8px 12px;
-  border-radius: var(--xv-r-sm);
-  background: var(--xv-surface);
-  transition: background var(--xv-dur) var(--xv-ease), transform var(--xv-dur) var(--xv-ease);
+  border-radius: var(--dv-r-sm);
+  background: var(--dv-surface);
+  transition: background var(--dv-dur) var(--dv-ease), transform var(--dv-dur) var(--dv-ease);
 }
-.xv-row:hover { background: var(--xv-surface-2); }
+.dv-row:hover { background: var(--dv-surface-2); }
 
 /* 异常行：红色左边条，确保不漏看 */
-.xv-row--alert {
-  background: color-mix(in srgb, var(--xv-err) 8%, var(--xv-surface));
-  border-left: 3px solid var(--xv-err);
+.dv-row--alert {
+  background: color-mix(in srgb, var(--dv-err) 8%, var(--dv-surface));
+  border-left: 3px solid var(--dv-err);
 }
-.xv-row--ok { border-left: 3px solid var(--xv-ok); }
+.dv-row--ok { border-left: 3px solid var(--dv-ok); }
 
 /* ============ 5. Element Plus 细节收敛 ============ */
 .el-card {
-  border: 1px solid var(--xv-border);
-  border-radius: var(--xv-r);
-  background: var(--xv-surface);
+  border: 1px solid var(--dv-border);
+  border-radius: var(--dv-r);
+  background: var(--dv-surface);
   --el-card-padding: 14px;
 }
-.el-card__header { border-bottom: 1px solid var(--xv-border); padding: 10px 14px; }
+.el-card__header { border-bottom: 1px solid var(--dv-border); padding: 10px 14px; }
 
 .el-button {
-  border-radius: var(--xv-r-sm);
+  border-radius: var(--dv-r-sm);
   font-weight: 600;
-  transition: transform var(--xv-dur) var(--xv-ease),
-              background-color var(--xv-dur) var(--xv-ease),
-              border-color var(--xv-dur) var(--xv-ease),
-              box-shadow var(--xv-dur) var(--xv-ease);
+  transition: transform var(--dv-dur) var(--dv-ease),
+              background-color var(--dv-dur) var(--dv-ease),
+              border-color var(--dv-dur) var(--dv-ease),
+              box-shadow var(--dv-dur) var(--dv-ease);
 }
 /* 悬停轻微上浮 + 图标右移 2px */
 .el-button:not(.is-disabled):hover {
   transform: translateY(-1px);
   box-shadow: 0 4px 12px -6px rgba(0, 0, 0, .7);
 }
-.el-button .el-icon { transition: transform var(--xv-dur) var(--xv-ease); }
+.el-button .el-icon { transition: transform var(--dv-dur) var(--dv-ease); }
 .el-button:not(.is-disabled):hover .el-icon { transform: translateX(2px); }
 .el-button--primary {
-  --el-button-bg-color: var(--xv-primary);
-  --el-button-border-color: var(--xv-primary);
-  --el-button-text-color: var(--xv-on-primary);
-  --el-button-hover-bg-color: color-mix(in srgb, var(--xv-primary) 86%, #fff);
-  --el-button-hover-border-color: color-mix(in srgb, var(--xv-primary) 86%, #fff);
-  --el-button-hover-text-color: var(--xv-on-primary);
+  --el-button-bg-color: var(--dv-primary);
+  --el-button-border-color: var(--dv-primary);
+  --el-button-text-color: var(--dv-on-primary);
+  --el-button-hover-bg-color: color-mix(in srgb, var(--dv-primary) 86%, #fff);
+  --el-button-hover-border-color: color-mix(in srgb, var(--dv-primary) 86%, #fff);
+  --el-button-hover-text-color: var(--dv-on-primary);
   font-weight: 700;
 }
 
 .el-input__wrapper,
 .el-select__wrapper,
 .el-textarea__inner {
-  border-radius: var(--xv-r-sm);
-  box-shadow: 0 0 0 1px var(--xv-border) inset;
-  background: var(--xv-surface-2);
-  transition: box-shadow var(--xv-dur) var(--xv-ease), background-color var(--xv-dur) var(--xv-ease);
+  border-radius: var(--dv-r-sm);
+  box-shadow: 0 0 0 1px var(--dv-border) inset;
+  background: var(--dv-surface-2);
+  transition: box-shadow var(--dv-dur) var(--dv-ease), background-color var(--dv-dur) var(--dv-ease);
 }
 .el-input__wrapper:hover,
-.el-select__wrapper:hover { box-shadow: 0 0 0 1px var(--xv-border-2) inset; }
+.el-select__wrapper:hover { box-shadow: 0 0 0 1px var(--dv-border-2) inset; }
 .el-input__wrapper.is-focus,
 .el-select__wrapper.is-focused {
-  box-shadow: 0 0 0 1px var(--xv-primary) inset, 0 0 14px -6px var(--xv-primary);
+  box-shadow: 0 0 0 1px var(--dv-primary) inset, 0 0 14px -6px var(--dv-primary);
 }
 
 .el-table {
-  --el-table-border-color: var(--xv-border);
+  --el-table-border-color: var(--dv-border);
   --el-table-bg-color: transparent;
   --el-table-tr-bg-color: transparent;
-  --el-table-header-bg-color: var(--xv-surface-2);
-  --el-table-header-text-color: var(--xv-text-2);
-  --el-table-row-hover-bg-color: var(--xv-surface-2);
+  --el-table-header-bg-color: var(--dv-surface-2);
+  --el-table-header-text-color: var(--dv-text-2);
+  --el-table-row-hover-bg-color: var(--dv-surface-2);
   background: transparent;
   font-size: 13px;
 }
@@ -411,8 +411,8 @@ samp,
   text-transform: uppercase;
   font-size: 12px;
 }
-.el-table td.el-table__cell { border-bottom: 1px solid var(--xv-border); }
-.el-table__body tr:hover > td.el-table__cell { transition: background var(--xv-dur) var(--xv-ease); }
+.el-table td.el-table__cell { border-bottom: 1px solid var(--dv-border); }
+.el-table__body tr:hover > td.el-table__cell { transition: background var(--dv-dur) var(--dv-ease); }
 
 .el-tag {
   border-radius: 4px;
@@ -420,24 +420,24 @@ samp,
   border: 1px solid transparent;
 }
 
-.el-tabs__item { font-weight: 600; letter-spacing: .02em; transition: color var(--xv-dur) var(--xv-ease); }
-.el-tabs__nav-wrap::after { background: var(--xv-border); }
-.el-tabs__active-bar { background: var(--xv-primary); }
+.el-tabs__item { font-weight: 600; letter-spacing: .02em; transition: color var(--dv-dur) var(--dv-ease); }
+.el-tabs__nav-wrap::after { background: var(--dv-border); }
+.el-tabs__active-bar { background: var(--dv-primary); }
 
 .el-dialog,
-.el-drawer { background: var(--xv-surface); border: 1px solid var(--xv-border); }
-.el-dialog__title, .el-drawer__title { color: var(--xv-text); font-weight: 700; }
+.el-drawer { background: var(--dv-surface); border: 1px solid var(--dv-border); }
+.el-dialog__title, .el-drawer__title { color: var(--dv-text); font-weight: 700; }
 
-.el-descriptions__label { color: var(--xv-text-3) !important; font-weight: 600; }
-.el-descriptions__content { color: var(--xv-text) !important; }
+.el-descriptions__label { color: var(--dv-text-3) !important; font-weight: 600; }
+.el-descriptions__content { color: var(--dv-text) !important; }
 
-.el-pagination { --el-pagination-bg-color: transparent; --el-pagination-button-bg-color: var(--xv-surface-2); }
-.el-progress-bar__outer { background: var(--xv-surface-3); }
+.el-pagination { --el-pagination-bg-color: transparent; --el-pagination-button-bg-color: var(--dv-surface-2); }
+.el-progress-bar__outer { background: var(--dv-surface-3); }
 
 .el-menu { border-right: none; background: transparent; }
-.el-message-box { background: var(--xv-surface); border: 1px solid var(--xv-border); }
-.el-popper.is-light { background: var(--xv-surface-2); border-color: var(--xv-border); color: var(--xv-text); }
-.el-select-dropdown__item.is-selected { color: var(--xv-primary); font-weight: 700; }
+.el-message-box { background: var(--dv-surface); border: 1px solid var(--dv-border); }
+.el-popper.is-light { background: var(--dv-surface-2); border-color: var(--dv-border); color: var(--dv-text); }
+.el-select-dropdown__item.is-selected { color: var(--dv-primary); font-weight: 700; }
 
 /* ============ 6. 动效降级（可访问性） ============ */
 @media (prefers-reduced-motion: reduce) {
@@ -454,4 +454,4 @@ samp,
 }
 
 /* 供 JS 读取的“当前是否减弱动效”提示（非必需，仅调试用） */
-html[data-xv-reduced="1"] .xv-dot--live { animation: none; }
+html[data-dv-reduced="1"] .dv-dot--live { animation: none; }

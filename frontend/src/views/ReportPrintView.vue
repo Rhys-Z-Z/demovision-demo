@@ -114,17 +114,17 @@ onMounted(async () => {
   padding: 16px;
 }
 .report-sheet {
-  background: var(--xv-surface);
-  border: 1px solid var(--xv-border);
+  background: var(--dv-surface);
+  border: 1px solid var(--dv-border);
   padding: 32px;
-  border-radius: var(--xv-r);
-  box-shadow: var(--xv-shadow);
+  border-radius: var(--dv-r);
+  box-shadow: var(--dv-shadow);
 }
 .report-title {
   text-align: center;
   font-size: 22px;
   margin: 0 0 20px;
-  color: var(--xv-text);
+  color: var(--dv-text);
   letter-spacing: .04em;
 }
 .meta-table {
@@ -134,31 +134,31 @@ onMounted(async () => {
   font-size: 13px;
 }
 .meta-table td {
-  border: 1px solid var(--xv-border);
+  border: 1px solid var(--dv-border);
   padding: 6px 10px;
-  color: var(--xv-text);
+  color: var(--dv-text);
 }
 .meta-label {
-  background: var(--xv-surface-2);
-  color: var(--xv-text-2);
+  background: var(--dv-surface-2);
+  color: var(--dv-text-2);
   font-weight: 600;
   width: 110px;
 }
 /* 报告正文：等宽字体，数字好对齐好扫读 */
 .report-body {
-  font-family: var(--xv-mono);
+  font-family: var(--dv-mono);
   font-size: 12.5px;
   line-height: 1.65;
   white-space: pre-wrap;
   word-break: break-all;
-  background: var(--xv-bg);
-  color: var(--xv-text-2);
-  border: 1px solid var(--xv-border);
+  background: var(--dv-bg);
+  color: var(--dv-text-2);
+  border: 1px solid var(--dv-border);
   padding: 14px;
-  border-radius: var(--xv-r-sm);
+  border-radius: var(--dv-r-sm);
 }
 .truncated-hint {
-  color: var(--xv-warn);
+  color: var(--dv-warn);
   font-size: 12px;
 }
 .report-image {
@@ -169,8 +169,8 @@ onMounted(async () => {
   display: flex;
   justify-content: space-between;
   font-size: 12px;
-  color: var(--xv-text-3);
-  font-family: var(--xv-mono);
+  color: var(--dv-text-3);
+  font-family: var(--dv-mono);
 }
 @media print {
   .no-print {

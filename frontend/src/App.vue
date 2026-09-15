@@ -22,7 +22,7 @@
 
       <div class="rail-foot">
         <div class="rail-item rail-item--static" :title="taskStore.wsConnected ? '实时通道已连接' : '实时通道断开'">
-          <span class="xv-dot" :class="taskStore.wsConnected ? 'xv-dot--ok xv-dot--live' : 'xv-dot--err'"></span>
+          <span class="dv-dot" :class="taskStore.wsConnected ? 'dv-dot--ok dv-dot--live' : 'dv-dot--err'"></span>
           <span class="rail-label">{{ taskStore.wsConnected ? '实时通道已连接' : '实时通道断开' }}</span>
         </div>
       </div>
@@ -39,15 +39,15 @@
 
         <!-- 工作时段 / 当前作业 -->
         <div class="header-meta">
-          <span class="xv-badge" :class="workStatus.cls">
-            <span class="xv-dot" :class="workStatus.dot"></span>{{ workStatus.text }}
+          <span class="dv-badge" :class="workStatus.cls">
+            <span class="dv-dot" :class="workStatus.dot"></span>{{ workStatus.text }}
           </span>
-          <span class="xv-badge">
+          <span class="dv-badge">
             <el-icon :size="12"><Clock /></el-icon>
-            <span class="xv-num">{{ clockText }}</span>
+            <span class="dv-num">{{ clockText }}</span>
           </span>
-          <span class="xv-badge" :class="taskBadge.cls">
-            <span class="xv-dot" :class="taskBadge.dot"></span>{{ taskBadge.text }}
+          <span class="dv-badge" :class="taskBadge.cls">
+            <span class="dv-dot" :class="taskBadge.dot"></span>{{ taskBadge.text }}
           </span>
         </div>
 
@@ -55,13 +55,13 @@
         <div class="header-right">
           <div class="lamp-group">
             <span class="lamp" :title="`实时通道：${taskStore.wsConnected ? '已连接' : '断开'}`">
-              <span class="xv-dot" :class="taskStore.wsConnected ? 'xv-dot--ok' : 'xv-dot--err'"></span>通道
+              <span class="dv-dot" :class="taskStore.wsConnected ? 'dv-dot--ok' : 'dv-dot--err'"></span>通道
             </span>
             <span class="lamp" :title="`SDK：${sdkRunning ? '运行中' : '未启动'}`">
-              <span class="xv-dot" :class="sdkRunning ? 'xv-dot--ok xv-dot--live' : 'xv-dot--err'"></span>SDK
+              <span class="dv-dot" :class="sdkRunning ? 'dv-dot--ok dv-dot--live' : 'dv-dot--err'"></span>SDK
             </span>
             <span class="lamp" :title="`实时图像：${sdkStore.videoServerRunning ? '可用' : '不可用'}`">
-              <span class="xv-dot" :class="sdkStore.videoServerRunning ? 'xv-dot--ok' : 'xv-dot--warn'"></span>图像
+              <span class="dv-dot" :class="sdkStore.videoServerRunning ? 'dv-dot--ok' : 'dv-dot--warn'"></span>图像
             </span>
           </div>
 
@@ -112,13 +112,13 @@
 
       <!-- ===== 主区域 ===== -->
       <el-main class="app-main">
-        <svg class="xv-watermark" aria-hidden="true">
+        <svg class="dv-watermark" aria-hidden="true">
           <defs>
-            <pattern id="xv-wm-pattern" width="230" height="150" patternUnits="userSpaceOnUse" patternTransform="rotate(-22)">
+            <pattern id="dv-wm-pattern" width="230" height="150" patternUnits="userSpaceOnUse" patternTransform="rotate(-22)">
               <text x="0" y="18" font-size="13" letter-spacing="6" fill="currentColor">DemoVision</text>
             </pattern>
           </defs>
-          <rect width="100%" height="100%" fill="url(#xv-wm-pattern)" />
+          <rect width="100%" height="100%" fill="url(#dv-wm-pattern)" />
         </svg>
 
         <div class="app-main-inner">
@@ -169,7 +169,7 @@ const rosMonitorStore = useRosMonitorStore()
 const sdkStore = useSdkStore()
 
 /* ===== 显示模式 ===== */
-const displayMode = ref(document.documentElement.getAttribute('data-xv-mode') || 'dash')
+const displayMode = ref(document.documentElement.getAttribute('data-dv-mode') || 'dash')
 
 function setMode(id) {
   // 同步 <html> 属性 + 落 localStorage + 通知图表重绘
@@ -187,8 +187,8 @@ const workStatus = computed(() => {
   const span = `${p(WORK_START)}:00–${p(WORK_END)}:00`
   const inWork = h >= WORK_START && h < WORK_END
   return inWork
-    ? { text: `工作时段 ${span}`, cls: 'xv-badge--ok', dot: 'xv-dot--ok xv-dot--live' }
-    : { text: `非工作时段 ${span}`, cls: 'xv-badge--warn', dot: 'xv-dot--warn' }
+    ? { text: `工作时段 ${span}`, cls: 'dv-badge--ok', dot: 'dv-dot--ok dv-dot--live' }
+    : { text: `非工作时段 ${span}`, cls: 'dv-badge--warn', dot: 'dv-dot--warn' }
 })
 
 const clockText = computed(() => {
@@ -198,8 +198,8 @@ const clockText = computed(() => {
 })
 
 const taskBadge = computed(() => {
-  if (taskStore.detection.running) return { text: '检测执行中', cls: 'xv-badge--info', dot: 'xv-dot--ok xv-dot--live' }
-  if (taskStore.slam.running) return { text: 'SLAM 记录中', cls: 'xv-badge--info', dot: 'xv-dot--ok xv-dot--live' }
+  if (taskStore.detection.running) return { text: '检测执行中', cls: 'dv-badge--info', dot: 'dv-dot--ok dv-dot--live' }
+  if (taskStore.slam.running) return { text: 'SLAM 记录中', cls: 'dv-badge--info', dot: 'dv-dot--ok dv-dot--live' }
   return { text: '空闲', cls: '', dot: '' }
 })
 
@@ -306,7 +306,7 @@ onBeforeUnmount(() => {
 </script>
 
 <style>
-/* App 外壳布局：本节为全局样式（其他页面依赖 --xv-* token 与 .xv-* 基础类） */
+/* App 外壳布局：本节为全局样式（其他页面依赖 --dv-* token 与 .dv-* 基础类） */
 
 .app-shell { height: 100%; }
 
@@ -314,14 +314,14 @@ onBeforeUnmount(() => {
 .app-aside {
   width: 68px;
   flex: none;
-  background: var(--xv-bg);
-  border-right: 1px solid var(--xv-border);
+  background: var(--dv-bg);
+  border-right: 1px solid var(--dv-border);
   display: flex;
   flex-direction: column;
   position: relative;
   z-index: 30;              /* 悬停展开的胶囊需盖住主区 */
   overflow: visible;
-  transition: border-color var(--xv-dur) var(--xv-ease);
+  transition: border-color var(--dv-dur) var(--dv-ease);
 }
 
 .rail-logo {
@@ -330,8 +330,8 @@ onBeforeUnmount(() => {
   align-items: center;
   gap: 11px;
   padding: 0 16px;
-  color: var(--xv-primary);
-  border-bottom: 1px solid var(--xv-border);
+  color: var(--dv-primary);
+  border-bottom: 1px solid var(--dv-border);
   white-space: nowrap;
   overflow: hidden;
 }
@@ -339,9 +339,9 @@ onBeforeUnmount(() => {
   font-size: 14px;
   font-weight: 800;
   letter-spacing: .16em;
-  color: var(--xv-text);
+  color: var(--dv-text);
   opacity: 0;
-  transition: opacity var(--xv-dur) var(--xv-ease);
+  transition: opacity var(--dv-dur) var(--dv-ease);
 }
 .app-aside:hover .rail-logo-label { opacity: 1; }
 
@@ -354,7 +354,7 @@ onBeforeUnmount(() => {
 }
 .rail-foot {
   padding: 8px 8px 12px;
-  border-top: 1px solid var(--xv-border);
+  border-top: 1px solid var(--dv-border);
 }
 
 /* 胶囊：默认 52px（仅图标），导轨悬停时展开显示文字 */
@@ -365,53 +365,53 @@ onBeforeUnmount(() => {
   height: 40px;
   width: 52px;
   padding: 0 17px;
-  border-radius: var(--xv-r);
-  color: var(--xv-text-3);
+  border-radius: var(--dv-r);
+  color: var(--dv-text-3);
   text-decoration: none;
   white-space: nowrap;
   overflow: hidden;
-  background: var(--xv-surface);
-  transition: width var(--xv-dur) var(--xv-ease),
-              background-color var(--xv-dur) var(--xv-ease),
-              color var(--xv-dur) var(--xv-ease),
-              box-shadow var(--xv-dur) var(--xv-ease);
+  background: var(--dv-surface);
+  transition: width var(--dv-dur) var(--dv-ease),
+              background-color var(--dv-dur) var(--dv-ease),
+              color var(--dv-dur) var(--dv-ease),
+              box-shadow var(--dv-dur) var(--dv-ease);
 }
 .app-aside:hover .rail-item { width: 186px; }
 
 .rail-item .rail-icon {
   flex: none;
   width: 18px;
-  transition: transform var(--xv-dur) var(--xv-ease);
+  transition: transform var(--dv-dur) var(--dv-ease);
 }
 .rail-item .rail-label {
   font-size: 13px;
   font-weight: 600;
   opacity: 0;
-  transition: opacity var(--xv-dur) var(--xv-ease);
+  transition: opacity var(--dv-dur) var(--dv-ease);
 }
 .app-aside:hover .rail-item .rail-label { opacity: 1; }
 
 .rail-item:hover {
-  background: var(--xv-surface-2);
-  color: var(--xv-text);
-  box-shadow: var(--xv-shadow);
+  background: var(--dv-surface-2);
+  color: var(--dv-text);
+  box-shadow: var(--dv-shadow);
 }
 .rail-item:hover .rail-icon { transform: translateX(2px); }
 
 .rail-item.is-active {
-  background: color-mix(in srgb, var(--xv-primary) 14%, var(--xv-surface));
-  color: var(--xv-primary);
-  box-shadow: inset 2px 0 0 var(--xv-primary);
+  background: color-mix(in srgb, var(--dv-primary) 14%, var(--dv-surface));
+  color: var(--dv-primary);
+  box-shadow: inset 2px 0 0 var(--dv-primary);
 }
 .rail-item--static { cursor: default; background: transparent; }
-.rail-item--static:hover { background: var(--xv-surface); box-shadow: none; }
+.rail-item--static:hover { background: var(--dv-surface); box-shadow: none; }
 
 /* ---------- 顶部状态栏 ---------- */
 .app-header {
   height: 56px;
   padding: 0 16px;
-  background: var(--xv-surface);
-  border-bottom: 1px solid var(--xv-border);
+  background: var(--dv-surface);
+  border-bottom: 1px solid var(--dv-border);
   display: flex;
   align-items: center;
   gap: 16px;
@@ -424,9 +424,9 @@ onBeforeUnmount(() => {
   gap: 8px;
   height: 32px;
   padding: 0 12px;
-  border-radius: var(--xv-r-sm);
-  background: var(--xv-surface-2);
-  border: 1px solid var(--xv-border);
+  border-radius: var(--dv-r-sm);
+  background: var(--dv-surface-2);
+  border: 1px solid var(--dv-border);
   flex: none;
   white-space: nowrap;
 }
@@ -434,11 +434,11 @@ onBeforeUnmount(() => {
   width: 6px;
   height: 6px;
   border-radius: 50%;
-  background: var(--xv-primary);
-  box-shadow: 0 0 0 3px color-mix(in srgb, var(--xv-primary) 18%, transparent);
+  background: var(--dv-primary);
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--dv-primary) 18%, transparent);
   flex: none;
 }
-.line-badge-name { font-size: 13.5px; font-weight: 700; color: var(--xv-text); letter-spacing: .04em; }
+.line-badge-name { font-size: 13.5px; font-weight: 700; color: var(--dv-text); letter-spacing: .04em; }
 
 .header-meta {
   display: flex;
@@ -448,8 +448,8 @@ onBeforeUnmount(() => {
   min-width: 0;
   overflow: hidden;
 }
-.header-meta .xv-badge { white-space: nowrap; }
-.header-meta .xv-badge .el-icon { margin-right: 1px; }
+.header-meta .dv-badge { white-space: nowrap; }
+.header-meta .dv-badge .el-icon { margin-right: 1px; }
 
 .header-right {
   display: flex;
@@ -464,10 +464,10 @@ onBeforeUnmount(() => {
   align-items: center;
   gap: 6px;
   font-size: 12px;
-  color: var(--xv-text-3);
+  color: var(--dv-text-3);
   cursor: default;
 }
-.lamp .xv-dot { width: 7px; height: 7px; }
+.lamp .dv-dot { width: 7px; height: 7px; }
 
 .ver-group { display: flex; align-items: center; gap: 8px; flex: none; }
 .ver-badge {
@@ -476,44 +476,44 @@ onBeforeUnmount(() => {
   gap: 6px;
   height: 26px;
   padding: 0 9px;
-  border-radius: var(--xv-r-sm);
-  background: var(--xv-surface-2);
-  border: 1px solid var(--xv-border);
+  border-radius: var(--dv-r-sm);
+  background: var(--dv-surface-2);
+  border: 1px solid var(--dv-border);
   white-space: nowrap;
 }
 .ver-label {
   font-size: 11px;
   font-weight: 700;
-  color: var(--xv-primary);
+  color: var(--dv-primary);
   letter-spacing: .04em;
 }
 .ver-value {
-  font-family: var(--xv-mono);
+  font-family: var(--dv-mono);
   font-size: 12px;
-  color: var(--xv-text);
+  color: var(--dv-text);
   max-width: 300px;
   overflow: hidden;
   text-overflow: ellipsis;
 }
 
 .sdk-switch { display: flex; align-items: center; gap: 8px; }
-.sdk-spin { color: var(--xv-primary); }
-.sdk-label { font-size: 12px; color: var(--xv-text-2); white-space: nowrap; }
+.sdk-spin { color: var(--dv-primary); }
+.sdk-label { font-size: 12px; color: var(--dv-text-2); white-space: nowrap; }
 
 /* 显示模式切换（紧凑分段控件） */
 .mode-switch {
   display: inline-flex;
   padding: 2px;
   gap: 2px;
-  border-radius: var(--xv-r-sm);
-  background: var(--xv-surface-2);
-  border: 1px solid var(--xv-border);
+  border-radius: var(--dv-r-sm);
+  background: var(--dv-surface-2);
+  border: 1px solid var(--dv-border);
 }
 .mode-btn {
   appearance: none;
   border: 0;
   background: transparent;
-  color: var(--xv-text-3);
+  color: var(--dv-text-3);
   font-family: inherit;
   font-size: 12px;
   font-weight: 600;
@@ -521,35 +521,35 @@ onBeforeUnmount(() => {
   padding: 0 10px;
   border-radius: 4px;
   cursor: pointer;
-  transition: background-color var(--xv-dur) var(--xv-ease),
-              color var(--xv-dur) var(--xv-ease);
+  transition: background-color var(--dv-dur) var(--dv-ease),
+              color var(--dv-dur) var(--dv-ease);
 }
-.mode-btn:hover { color: var(--xv-text); background: var(--xv-surface-3); }
+.mode-btn:hover { color: var(--dv-text); background: var(--dv-surface-3); }
 .mode-btn.is-active {
-  color: var(--xv-on-primary);
-  background: var(--xv-primary);
+  color: var(--dv-on-primary);
+  background: var(--dv-primary);
 }
 
 /* ---------- 主区域 ---------- */
 .app-main {
   position: relative;
   padding: 14px;
-  background: var(--xv-bg);
+  background: var(--dv-bg);
   overflow: auto;
   z-index: 1;
 }
 .app-main-inner { position: relative; z-index: 2; }
 
 /* 水印：斜向重复，极低对比 */
-.xv-watermark {
+.dv-watermark {
   position: fixed;
   inset: 0;
   width: 100%;
   height: 100%;
   pointer-events: none;
   z-index: 0;
-  color: var(--xv-text);
-  opacity: var(--xv-wm-opacity);
+  color: var(--dv-text);
+  opacity: var(--dv-wm-opacity);
 }
 
 /* 角落署名 */
@@ -557,11 +557,11 @@ onBeforeUnmount(() => {
   position: fixed;
   right: 16px;
   bottom: 8px;
-  font-family: var(--xv-mono);
+  font-family: var(--dv-mono);
   font-size: 12px;
   letter-spacing: .22em;
-  color: var(--xv-text);
-  opacity: var(--xv-sign-opacity);
+  color: var(--dv-text);
+  opacity: var(--dv-sign-opacity);
   pointer-events: none;
   user-select: none;
   z-index: 10;
@@ -571,7 +571,7 @@ onBeforeUnmount(() => {
 @media print {
   .app-aside,
   .app-header,
-  .xv-watermark,
+  .dv-watermark,
   .app-sign { display: none !important; }
   .app-main { padding: 0 !important; background: #fff !important; overflow: visible !important; }
   .app-shell { height: auto !important; }
