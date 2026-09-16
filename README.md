@@ -10,6 +10,14 @@
 
 > 本仓库为**脱敏公开演示版**：原产线脚本（`ship_out.py` / `slam_plotter_final.py` / `run_update_gyro_bias.sh`）与 SDK/ROS 依赖已全部替换为**模拟实现**，无任何真实硬件逻辑与专有代码。
 
+### 演示动图
+
+| 核心看板 · SLAM 实时大屏 | 任务闭环 · 质检 → 实时日志 → 自动报告 |
+|---|---|
+| ![核心看板](demo-dashboard.gif) | ![任务闭环](demo-workflow.gif) |
+
+> 以上为公开 Demo 模式实际运行录制。将 `demo-dashboard.gif` 与 `demo-workflow.gif` 放入仓库根目录即可在下方正常展示。
+
 ---
 
 ## 一、快速开始（无需硬件 / ROS / SDK）
@@ -46,6 +54,20 @@ uvicorn app.main:app --host 0.0.0.0 --port 8010        # 后端
 
 cd ../frontend && npm install && npm run dev            # 前端（代理指向 8010）
 ```
+
+---
+
+### 方式 4：AppImage 单文件（双击即开，推荐对外演示）
+
+```bash
+./build_appimage.sh                   # 开发机打包，产物 36MB 左右
+./DemoVision-1.0-x86_64.AppImage       # 双击运行，或在终端执行
+```
+
+- 自包含 Python 3.8 运行时与全部依赖：目标机**无需**安装 Python / Node / Docker / ROS / SDK
+- 图标取自项目根目录 `demo_icon.png`，数据落 `~/demovision_data`（`DEMOVISION_DATA_DIR` 可覆盖），首次运行自动播种演示数据
+- 端口默认 8010，被占用时自动顺延；退出方式：`Ctrl+C` 或直接关闭终端窗口
+- 目标机要求：x86_64 Linux + FUSE（`libfuse2`，Ubuntu 桌面版默认已装）
 
 ---
 
@@ -136,3 +158,14 @@ python3 tests/run_all.py     # 推荐：每个模块独立子进程，规避进�
 - 产线检测 / SLAM / IMU 真实脚本 → 同接口模拟器（`scripts/`、`imu_tool/`）
 - 品牌名 → DemoVision；内部路径、署名、SDK 安装包、二进制 → 全部移除
 - 不包含任何真实设备通信、SDK 代码或产线数据
+
+---
+
+## 八、技术定制与合作 (Commercial Services)
+
+具备软硬件系统集成、Web 监控与产线自动化测试全流程经验，承接以下外包与定制：
+
+1. **机器人/物联网设备 Web 监控平台搭建**（FastAPI + Vue3 + WebSocket 实时流）
+2. **自动化测试与质检系统迁移**（传统 Shell/Python 终端脚本封装为 Web 端一键平台）
+3. **轻量化跨平台交付**（Docker / AppImage 单文件绿色免安装打包）
+4. **联系方式**：[邮箱：zzxdwy@yeah.net / 电鸭主页]

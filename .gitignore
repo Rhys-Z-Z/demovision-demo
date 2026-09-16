@@ -9,10 +9,17 @@ backend/pipdeps/
 frontend/node_modules/
 frontend/.vite/
 frontend/*.log
+frontend/dist/
 
 # 本地演示数据（首次启动自动生成，不入库）
 demo_data/
 *.db
+
+# AppImage / 打包产物（构建时再生成）
+*.AppImage
+*.tar.gz
+dist-package/
+.appimage-build/
 
 # 编辑器 / 系统
 .DS_Store
