@@ -151,13 +151,13 @@ python3 tests/run_all.py     # 推荐：每个模块独立子进程，规避进�
 
 ---
 
-## 七、脱敏声明
+## 七、声明
 
 本项目为公开演示用途，已将以下专有内容替换为模拟实现并移除：
 
-- 产线检测 / SLAM / IMU 真实脚本 → 同接口模拟器（`scripts/`、`imu_tool/`）
+- 检测 / SLAM / IMU 真实脚本 → 同接口模拟器（`scripts/`、`imu_tool/`）
 - 品牌名 → DemoVision；内部路径、署名、SDK 安装包、二进制 → 全部移除
-- 不包含任何真实设备通信、SDK 代码或产线数据
+- 不包含任何真实设备通信、SDK 代码或数据
 
 ---
 
@@ -168,4 +168,4 @@ python3 tests/run_all.py     # 推荐：每个模块独立子进程，规避进�
 1. **机器人/物联网设备 Web 监控平台搭建**（FastAPI + Vue3 + WebSocket 实时流）
 2. **自动化测试与质检系统迁移**（传统 Shell/Python 终端脚本封装为 Web 端一键平台）
 3. **轻量化跨平台交付**（Docker / AppImage 单文件绿色免安装打包）
-4. **联系方式**：[邮箱：zzxdwy@yeah.net / 电鸭主页]
+4. **联系方式**：[邮箱：zzxdwy@yeah.net ]
