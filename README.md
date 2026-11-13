@@ -49,6 +49,20 @@ cd ../frontend && npm install && npm run dev            # 前端（代理指向 
 
 ---
 
+### 方式 4：AppImage 单文件（双击即开，推荐对外演示）
+
+```bash
+./build_appimage.sh                   # 开发机打包，产物 36MB 左右
+./DemoVision-1.0-x86_64.AppImage       # 双击运行，或在终端执行
+```
+
+- 自包含 Python 3.8 运行时与全部依赖：目标机**无需**安装 Python / Node / Docker / ROS / SDK
+- 图标取自项目根目录 `demo_icon.png`，数据落 `~/demovision_data`（`DEMOVISION_DATA_DIR` 可覆盖），首次运行自动播种演示数据
+- 端口默认 8010，被占用时自动顺延；退出方式：`Ctrl+C` 或直接关闭终端窗口
+- 目标机要求：x86_64 Linux + FUSE（`libfuse2`，Ubuntu 桌面版默认已装）
+
+---
+
 ## 二、Demo 模式说明
 
 由环境变量 `DEMOVISION_DEMO_MODE` 控制（**默认开启**）：
@@ -110,11 +124,29 @@ demovision-demo/
 
 ```bash
 cd backend
-python3 tests/run_all.py     # 推荐：每个模块独立子进程，规避进程级配置缓存干扰
-# 或逐个运行：python3 -m unittest tests.test_paths -v（app.config 为进程级缓存，勿混合 discover）
+pip install -r requirements-dev.txt        # 首次：安装 pytest / pytest-cov
+
+python3 -m pytest                          # 全量（约 1s）
+python3 -m pytest -v                       # 详细：每个用例一行
+python3 -m pytest tests/test_parser_service.py            # 单文件
+python3 -m pytest -k imu                   # 按用例名筛选
+python3 -m pytest --cov=app --cov-report=term              # 覆盖率
 ```
 
-覆盖：日期目录一致性、路径穿越防护、SLAM 归档、截图 SSRF/抓帧失败等。
+说明：
+
+- `tests/conftest.py` 在 pytest **收集阶段**（任何测试模块 import 之前）统一设置
+  `DEMOVISION_DATA_DIR` / `DEMOVISION_DB_DIR` / `DEMOVISION_DEMO_MODE`，
+  所有模块共享同一份进程级配置，**不再需要按模块开子进程隔离**；
+  测试数据落系统临时目录，不会污染 `~/demovision_data`。
+- 覆盖范围（125 用例，全量覆盖率约 49%，业务层 76%~100%）：
+  - 安全：路径穿越（含 symlink/相邻前缀）、`/api/files/download` 任意文件读取、
+    单文件下载白名单、截图 SSRF
+  - 契约：报告解析（检测汇总 / SLAM 统计 / 轨迹 CSV 降采样 / IMU 偏置与合格性）、
+    `date_key` 与产线脚本逐字符一致、日志重定向（`\r` 进度条 / ANSI）
+  - 业务：SLAM 归档成功/残留预归档/失败注入三态、历史详情/zip/打印报告/轨迹、
+    查询层日期边界与分页、启动迁移幂等与历史行回填、检测任务单任务互斥
+- 真实模式（ROS/SDK/硬件）分支不在测试范围内；Demo 模拟器本身不测（属演示道具）。
 
 ---
 

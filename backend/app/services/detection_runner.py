@@ -81,8 +81,13 @@ class LogRedirect:
             return
         text = re.sub(r"\033\[[0-9;]*m", "", text)
         # 进度条：\r 刷新且无换行，直接取最新一段
+        # 取最后一个非空段：print(msg, end="\r") 会在尾部留一个空段，
+        # 旧实现 split("\r")[-1] 会得到 "" 并把整条进度静默丢弃。
         if "\r" in text and "\n" not in text:
-            line = text.split("\r")[-1].strip()
+            line = next(
+                (seg.strip() for seg in reversed(text.split("\r")) if seg.strip()),
+                "",
+            )
             if line:
                 self._emit(line)
             return

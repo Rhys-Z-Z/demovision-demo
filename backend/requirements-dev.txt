@@ -1,0 +1,4 @@
+# 测试开发依赖（运行后端不需要，CI / 本地测试时安装）
+# 用法：cd backend && pip install -r requirements-dev.txt
+pytest>=8.0
+pytest-cov>=5.0

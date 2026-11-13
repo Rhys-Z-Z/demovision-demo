@@ -6,75 +6,62 @@
   - symlink 指向数据根外部
   - data-evil 相邻目录（前缀误判：/data-evil 不得视为 /data 之下）
   - 数据根自身与之外的绝对路径越权
+
+pytest 迁移要点（对照旧 unittest 版）：
+  - 旧版 setUpClass 手动接管 DEMOVISION_DATA_DIR + skipTest 兜底，整段删除：
+    conftest.py 已统一接管，DATA_DIR 天然指向临时目录，模块级 import 即可。
+  - 外部目录改用 pytest 自带 tmp_path fixture（每用例独享、自动清理），
+    替代手写 tempfile.mkdtemp。
+  - 不再继承 unittest.TestCase，self.assert* 改为裸 assert
+    （失败时 pytest 自动回显完整表达式与中间值，诊断信息更强）。
 """
 from __future__ import annotations
 
 import os
-import tempfile
-import unittest
-from pathlib import Path
+
+from app.config import DATA_DIR
+from app.utils.paths import is_under_data_dir
 
 
-class TestIsUnderDataDir(unittest.TestCase):
-    @classmethod
-    def setUpClass(cls) -> None:
-        # 整个类共用同一个临时数据根（app.config 只 import 一次，DATA_DIR 为模块级缓存值）
-        cls._real_data = os.environ.get("DEMOVISION_DATA_DIR", "")
-        cls._tmp = tempfile.mkdtemp(prefix="demovision_test_data_")
-        cls._tmp_outer = tempfile.mkdtemp(prefix="demovision_test_outer_")
-        os.environ["DEMOVISION_DATA_DIR"] = cls._tmp
+def _mk(rel: str) -> str:
+    """在数据根下创建 rel 的父目录并返回绝对路径"""
+    p = os.path.join(DATA_DIR, rel)
+    os.makedirs(os.path.dirname(p) or DATA_DIR, exist_ok=True)
+    return p
 
-        from app.config import DATA_DIR  # 必须在环境变量设置后导入
-        from app.utils.paths import is_under_data_dir
-        cls.DATA_DIR = DATA_DIR
-        # 模块级函数赋为类属性后须经 staticmethod，避免 self 被当作首参
-        cls.is_under_data_dir = staticmethod(is_under_data_dir)
-        if Path(DATA_DIR).resolve() != Path(cls._tmp).resolve():
-            cls.skipTest(cls, "DEMOVISION_DATA_DIR 未被测试目录接管")
 
-    @classmethod
-    def tearDownClass(cls) -> None:
-        os.environ["DEMOVISION_DATA_DIR"] = cls._real_data
-
-    def _mk(self, rel: str) -> str:
-        p = os.path.join(self._tmp, rel)
-        os.makedirs(os.path.dirname(p) or self._tmp, exist_ok=True)
-        return p
-
+class TestIsUnderDataDir:
     def test_normal_under(self):
-        p = self._mk("2026_Sep/Sep_8/VS1234")
-        self.assertTrue(self.is_under_data_dir(p))
+        p = _mk("2026_Sep/Sep_8/VS1234")
+        assert is_under_data_dir(p)
 
     def test_root_itself_rejected(self):
         # 数据根本身不是"之下"的文件，按拒绝处理
-        self.assertFalse(self.is_under_data_dir(self._tmp))
+        assert not is_under_data_dir(DATA_DIR)
 
     def test_parent_traversal_rejected(self):
         # ../ 穿越：先归一化，realpath 后必然逃逸数据根
-        p = self._mk("2026_Sep/Sep_8")
+        p = _mk("2026_Sep/Sep_8")
         evil = os.path.join(p, "..", "..", "..", "..", "etc", "passwd")
-        self.assertFalse(self.is_under_data_dir(evil))
+        assert not is_under_data_dir(evil)
 
     def test_adjacent_prefix_rejected(self):
-        # 以数据根+后缀命名的相邻目录：不得视为数据根之下（startswith(root+sep) 判定生效）
-        evil_root = self._tmp + "_evil"
+        # 字符串前缀相邻目录（{DATA_DIR}_evil）：不得视为数据根之下
+        # （startswith(root+sep) 判定生效）
+        evil_root = DATA_DIR + "_evil"
         os.makedirs(evil_root, exist_ok=True)
-        self.assertFalse(self.is_under_data_dir(evil_root))
-        self.assertFalse(self.is_under_data_dir(os.path.join(evil_root, "x")))
+        assert not is_under_data_dir(evil_root)
+        assert not is_under_data_dir(os.path.join(evil_root, "x"))
 
-    def test_absolute_escape_rejected(self):
-        self.assertFalse(self.is_under_data_dir(self._tmp_outer))
-        self.assertFalse(self.is_under_data_dir(os.path.join(self._tmp_outer, "file.txt")))
+    def test_absolute_escape_rejected(self, tmp_path):
+        # tmp_path：pytest 内置 fixture，每个用例独享的临时目录，用后自动清理
+        assert not is_under_data_dir(str(tmp_path))
+        assert not is_under_data_dir(str(tmp_path / "file.txt"))
 
-    def test_symlink_to_outside_rejected(self):
+    def test_symlink_to_outside_rejected(self, tmp_path):
         # symlink 指向数据根外部：resolve() 后逃逸，必须拒绝
-        outside = os.path.join(self._tmp_outer, "secret.txt")
-        with open(outside, "w") as f:
-            f.write("secret")
-        link = self._mk("2026_Sep/Sep_8/link")
-        os.symlink(outside, link)
-        self.assertFalse(self.is_under_data_dir(link))
-
-
-if __name__ == "__main__":
-    unittest.main(verbosity=2)
+        outside = tmp_path / "secret.txt"
+        outside.write_text("secret")
+        link = _mk("2026_Sep/Sep_8/link")
+        os.symlink(str(outside), link)
+        assert not is_under_data_dir(link)
