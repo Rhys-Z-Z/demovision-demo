@@ -1,4 +1,4 @@
-# DemoVision 设备质检平台（公开演示版）
+# DemoVision 
 
 一个将「产线检测、SLAM 精度录制、IMU 校准」从终端脚本搬到浏览器上的 Web 平台：
 
