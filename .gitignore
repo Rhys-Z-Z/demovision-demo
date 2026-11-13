@@ -27,3 +27,7 @@ demo_data/
 .idea/
 .vscode/
 *.swp
+
+# 打包归档
+*.tar.gz
+dist-package/

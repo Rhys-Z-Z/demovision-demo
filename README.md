@@ -10,6 +10,12 @@
 
 > 本仓库为**脱敏公开演示版**：原产线脚本（`ship_out.py` / `slam_plotter_final.py` / `run_update_gyro_bias.sh`）与 SDK/ROS 依赖已全部替换为**模拟实现**，无任何真实硬件逻辑与专有代码。
 
+### 演示动图
+
+| 核心看板 · SLAM 实时大屏 | 任务闭环 · 质检 → 实时日志 → 自动报告 |
+|---|---|
+| ![核心看板](demo-dashboard.gif) | ![任务闭环](demo-workflow.gif) |
+
 ---
 
 ## 一、快速开始（无需硬件 / ROS / SDK）
@@ -158,13 +164,3 @@ python3 -m pytest --cov=app --cov-report=term              # 覆盖率
 | 后端依赖安装失败 | 检查网络；默认使用清华 PyPI 镜像 |
 | 首次启动数据为空 | 确认 `DEMOVISION_DEMO_MODE` 未显式设为 0；删除 `~/demovision_data` 下的 db 后重启可重新播种 |
 | 需要真实模式 | 配置好 ROS + `dv_sdk` + `web_video_server` 后 `DEMOVISION_DEMO_MODE=0 ./start.sh` |
-
----
-
-## 七、脱敏声明
-
-本项目为公开演示用途，已将以下专有内容替换为模拟实现并移除：
-
-- 产线检测 / SLAM / IMU 真实脚本 → 同接口模拟器（`scripts/`、`imu_tool/`）
-- 品牌名 → DemoVision；内部路径、署名、SDK 安装包、二进制 → 全部移除
-- 不包含任何真实设备通信、SDK 代码或产线数据
